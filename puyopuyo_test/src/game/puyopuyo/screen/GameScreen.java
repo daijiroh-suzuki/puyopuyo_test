@@ -1,19 +1,24 @@
 package game.puyopuyo.screen;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 import game.puyopuyo.controller.Controller;
+import game.puyopuyo.parts.Animation;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 
 public class GameScreen extends BaseScreen {
 
+	/** コントローラー */
 	private Controller controller;
-
 	/** フィールド */
 	private Field field;
 	/** 組ぷよ */
 	private KumiPuyo kumiPuyo;
+	/** アニメーション */
+	private List<Animation> animation;
 
 	/**
 	 * コンストラクタ
@@ -27,6 +32,8 @@ public class GameScreen extends BaseScreen {
 		field = new Field();
 		// 組ぷよを生成
 		kumiPuyo = new KumiPuyo(field);
+		// アニメーション
+		animation = new ArrayList<Animation>();
 	}
 
 	/**
@@ -45,7 +52,7 @@ public class GameScreen extends BaseScreen {
 			boolean isFixed = kumiPuyo.move(KumiPuyo.DIR_DOWN);
 			if(isFixed) {
 				// 落下処理
-				field.drop();
+				animation.addAll(field.drop());
 				// 新しい組ぷよを生成
 				kumiPuyo = new KumiPuyo(field);
 			}
@@ -63,7 +70,16 @@ public class GameScreen extends BaseScreen {
 			controller.setKeyA(false);
 		}
 
-		field.update();
+		// アニメーション更新
+		for(int i=0; i<animation.size(); i++) {
+			Animation a = animation.get(i);
+			a.update();
+			if(!a.isRunning()) {
+				field.displayTile(a.getTo());
+				animation.remove(i);
+				i--;
+			}
+		}
 	}
 
 	/**
@@ -75,5 +91,9 @@ public class GameScreen extends BaseScreen {
 		field.draw(g);
 		// 組ぷよを描画
 		kumiPuyo.draw(g);
+		// アニメーション描画
+		for(Animation a : animation) {
+			a.draw(g);
+		}
 	}
 }

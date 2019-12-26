@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -31,9 +33,12 @@ public class Field {
 	/** ぷよの色：紫 */
 	public static final int COLOR_PURPLE = 4;
 	/** ぷよの色：おじゃま */
-	public static final int COLOR_O = 5;
+	public static final int COLOR_O      = 5;
 	/** ぷよの色：壁マス */
 	public static final int COLOR_WALL   = 9;
+
+	/** 一時非表示 */
+	public static final int TILE_HIDDEN = 10;
 
 	/** 背景画像イメージ */
 	private Image bgImage;
@@ -76,12 +81,6 @@ public class Field {
 	}
 
 	/**
-	 * 更新処理
-	 */
-	public void update() {
-	}
-
-	/**
 	 * 描画処理
 	 *
 	 * @param g
@@ -109,6 +108,11 @@ public class Field {
 
 				// 空白マスと壁マスは描画しない
 				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
+					continue;
+				}
+
+				// 一時非表示マスが描画しない
+				if(field[i][j] / TILE_HIDDEN > 0) {
 					continue;
 				}
 
@@ -168,7 +172,9 @@ public class Field {
 	/**
 	 * 落下処理
 	 */
-	public void drop() {
+	public List<Animation> drop() {
+
+		List<Animation> list = new ArrayList<Animation>();
 
 		// フィールドを下から上に向かって走査する
 		for(int i=field.length-1; i>=0; i--) {
@@ -183,11 +189,59 @@ public class Field {
 					do {
 						k++;
 					} while(field[k][j] == COLOR_NONE);
+
+					// 落下アニメーションをリストに追加
+					list.add(new Animation(
+							new Point(j, i),
+							new Point(j, k-1),
+							field[i][j]));
+					// 落下後マスに移動
 					field[k-1][j] = field[i][j];
 					field[i][j] = COLOR_NONE;
+					// 落下後マスを一時非表示
+					hiddenTile(j, k-1);
 				}
 			}
 		}
+		return list;
+	}
+
+	/**
+	 * 指定マスを一時非表示にする
+	 *
+	 * @param x 対象マスのx座標
+	 * @param y 対象マスのy座標
+	 */
+	public void hiddenTile(int x, int y) {
+		field[y][x] = field[y][x] + TILE_HIDDEN;
+	}
+
+	/**
+	 * 指定マスを一時非表示にする
+	 *
+	 * @param pos 対象マスのx,y座標
+	 */
+	public void hiddenTile(Point pos) {
+		hiddenTile(pos.x, pos.y);
+	}
+
+	/**
+	 * 指定マスの一時非表示を解除
+	 *
+	 * @param x 対象マスのx座標
+	 * @param y 対象マスのy座標
+	 */
+	public void displayTile(int x, int y) {
+		field[y][x] = field[y][x] - TILE_HIDDEN;
+	}
+
+	/**
+	 * 指定マスの一時非表示を解除
+	 *
+	 * @param pos 対象マスのx,y座標
+	 */
+	public void displayTile(Point pos) {
+		displayTile(pos.x, pos.y);
 	}
 
 	/**
