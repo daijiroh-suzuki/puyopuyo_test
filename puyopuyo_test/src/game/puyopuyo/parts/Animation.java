@@ -3,6 +3,7 @@ package game.puyopuyo.parts;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import game.puyopuyo.common.CommonUtil;
 import game.puyopuyo.common.ImageManager;
 
 public class Animation extends BaseAnimation {
@@ -13,8 +14,8 @@ public class Animation extends BaseAnimation {
 
 	public Animation(Point from, Point to, int color) {
 
-		this.current = grid2Pixel(from);
-		this.to      = grid2Pixel(to);
+		this.current = CommonUtil.grid2Pixel(from);
+		this.to      = CommonUtil.grid2Pixel(to);
 		this.color   = color;
 		this.running = true;
 	}
@@ -57,46 +58,6 @@ public class Animation extends BaseAnimation {
 	 * @return
 	 */
 	public Point getTo() {
-		return pixel2Grid(to);
-	}
-
-	/**
-	 * マス目座標をピクセル座標に変換する
-	 *
-	 * @param grid マス目座標
-	 * @return ピクセル座標
-	 */
-	private Point grid2Pixel(Point grid) {
-		return new Point(grid2Pixel(grid.x), grid2Pixel(grid.y));
-	}
-
-	/**
-	 * マス目座標をピクセル座標に変換する
-	 *
-	 * @param grid マス目座標
-	 * @return ピクセル座標
-	 */
-	private int grid2Pixel(int grid) {
-		return grid * Field.TILE_SIZE;
-	}
-
-	/**
-	 * ピクセル座標をマス目座標に変換する
-	 *
-	 * @param pixel ピクセル座標
-	 * @return マス目座標
-	 */
-	private int pixel2Grid(int pixel) {
-		return pixel / Field.TILE_SIZE;
-	}
-
-	/**
-	 * ピクセル座標をマス目座標に変換する
-	 *
-	 * @param pixel ピクセル座標
-	 * @return マス目座標
-	 */
-	private Point pixel2Grid(Point pixel) {
-		return new Point(pixel2Grid(pixel.x), pixel2Grid(pixel.y));
+		return CommonUtil.pixel2Grid(to);
 	}
 }
