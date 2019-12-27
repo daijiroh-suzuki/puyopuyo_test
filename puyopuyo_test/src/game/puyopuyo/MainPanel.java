@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
+import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.screen.BaseScreen;
 import game.puyopuyo.screen.GameScreen;
@@ -55,6 +56,8 @@ public class MainPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
+		// 画像ファイルをロード
+		ImageManager.init();
 		// ゲーム画面を生成
 		screen = new GameScreen(controller);
 

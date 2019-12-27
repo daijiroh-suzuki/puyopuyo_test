@@ -1,25 +1,17 @@
 package game.puyopuyo.parts;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.net.URL;
 
-import javax.swing.ImageIcon;
+import game.puyopuyo.common.ImageManager;
 
 public class Animation extends BaseAnimation {
-
-	/** 画像イメージ */
-	private Image image;
 
 	private Point current;
 	private Point to;
 	private int color;
 
 	public Animation(Point from, Point to, int color) {
-
-		// 画像ファイルをロード
-		loadImage();
 
 		this.current = grid2Pixel(from);
 		this.to      = grid2Pixel(to);
@@ -47,7 +39,7 @@ public class Animation extends BaseAnimation {
 	@Override
 	public void draw(Graphics g) {
 
-		g.drawImage(image,
+		g.drawImage(ImageManager.puyoImage,
 				current.x,
 				current.y,
 				current.x + Field.TILE_SIZE,
@@ -106,15 +98,5 @@ public class Animation extends BaseAnimation {
 	 */
 	private Point pixel2Grid(Point pixel) {
 		return new Point(pixel2Grid(pixel.x), pixel2Grid(pixel.y));
-	}
-
-	/**
-	 * 画像ファイルをロードする
-	 */
-	private void loadImage() {
-		// ぷよ画像をロード
-		URL url = this.getClass().getClassLoader().getResource("images/puyo.gif");
-		ImageIcon icon = new ImageIcon(url);
-		image = icon.getImage();
 	}
 }

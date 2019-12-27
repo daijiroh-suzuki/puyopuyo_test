@@ -2,12 +2,10 @@ package game.puyopuyo.parts;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.net.URL;
 import java.util.List;
 
-import javax.swing.ImageIcon;
+import game.puyopuyo.common.ImageManager;
 
 public class Field {
 
@@ -46,11 +44,6 @@ public class Field {
 	/** 連結方向値配列 (上、右、下、左)*/
 	private static final int[] CONNECT_VAL = {1, 8, 2, 4};
 
-	/** 背景画像イメージ */
-	private Image bgImage;
-	/** ぷよ画像イメージ */
-	private Image puyoImage;
-
 	/** フィールド配列 */
 	private int[][] field;
 	/** 連結方向配列 */
@@ -60,9 +53,6 @@ public class Field {
 	 * コンストラクタ
 	 */
 	public Field() {
-
-		// 画像ファイルの読み込みを行う
-		loadImage();
 
 		// フィールド配列を生成
 		field = new int[ROW][COL];
@@ -101,7 +91,7 @@ public class Field {
 		updateConnect();
 
 		// 背景画像を描画
-		g.drawImage(bgImage,
+		g.drawImage(ImageManager.bgImage,
 				0,
 				0,
 				COL * TILE_SIZE,
@@ -130,7 +120,7 @@ public class Field {
 				}
 
 				// ぷよを描画
-				g.drawImage(puyoImage,
+				g.drawImage(ImageManager.puyoImage,
 						j * TILE_SIZE,
 						i * TILE_SIZE,
 						j * TILE_SIZE + TILE_SIZE,
@@ -281,20 +271,5 @@ public class Field {
 	 */
 	public void displayTile(Point pos) {
 		displayTile(pos.x, pos.y);
-	}
-
-	/**
-	 * 画像ファイルをロードする
-	 */
-	private void loadImage() {
-		// 背景画像をロード
-		URL url = this.getClass().getClassLoader().getResource("images/bg.png");
-		ImageIcon icon = new ImageIcon(url);
-		bgImage = icon.getImage();
-
-		// ぷよ画像をロード
-		url = this.getClass().getClassLoader().getResource("images/puyo.gif");
-		icon = new ImageIcon(url);
-		puyoImage = icon.getImage();
 	}
 }

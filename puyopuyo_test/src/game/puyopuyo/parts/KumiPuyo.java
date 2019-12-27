@@ -1,12 +1,10 @@
 package game.puyopuyo.parts;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.net.URL;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
+import game.puyopuyo.common.ImageManager;
 
 public class KumiPuyo {
 
@@ -29,9 +27,6 @@ public class KumiPuyo {
 	/** 難易度（出現するぷよの色数） */
 	private int difficulty;
 
-	/** 画像イメージ */
-	private Image image;
-
 	/** 組ぷよの形を格納 */
 	private int[][] kumiPuyo;
 
@@ -45,9 +40,6 @@ public class KumiPuyo {
 
 		// フィールド参照を取得
 		this.field = field;
-
-		// 画像ファイルをロード
-		loadImage();
 
 		// 難易度を設定
 		difficulty = 5;
@@ -136,7 +128,7 @@ public class KumiPuyo {
 				if(kumiPuyo[i][j] == Field.COLOR_NONE) {
 					continue;
 				}
-				g.drawImage(image,
+				g.drawImage(ImageManager.puyoImage,
 						(pos.x + j) * TILE_SIZE,
 						(pos.y + i) * TILE_SIZE,
 						(pos.x + j) * TILE_SIZE + TILE_SIZE,
@@ -148,15 +140,5 @@ public class KumiPuyo {
 						null);
 			}
 		}
-	}
-
-	/**
-	 * 画像ファイルをロードする
-	 */
-	private void loadImage() {
-		// ぷよ画像をロード
-		URL url = this.getClass().getClassLoader().getResource("images/puyo.gif");
-		ImageIcon icon = new ImageIcon(url);
-		image = icon.getImage();
 	}
 }
