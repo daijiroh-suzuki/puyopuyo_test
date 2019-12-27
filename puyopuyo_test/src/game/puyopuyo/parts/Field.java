@@ -3,6 +3,7 @@ package game.puyopuyo.parts;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import game.puyopuyo.common.ImageManager;
@@ -44,10 +45,20 @@ public class Field {
 	/** 連結方向値配列 (上、右、下、左)*/
 	private static final int[] CONNECT_VAL = {1, 8, 2, 4};
 
+	/** ぷよが消滅する連結数 */
+	private static final int VANISH_COUNT = 4;
+
 	/** フィールド配列 */
 	private int[][] field;
 	/** 連結方向配列 */
 	private int[][] connect;
+	/** 消滅チェック配列 */
+	private boolean[][] vanish;
+
+	/** 連結数カウンタ */
+	private int connectCount = 0;
+	/** 消滅対象リスト */
+	private List<Point> vanishList;
 
 	/**
 	 * コンストラクタ
@@ -58,6 +69,10 @@ public class Field {
 		field = new int[ROW][COL];
 		// 連結方向配列を生成
 		connect = new int[ROW][COL];
+		// 消滅チェック配列を生成
+		vanish = new boolean[ROW][COL];
+		// 消滅対象リストを生成
+		vanishList = new ArrayList<Point>();
 
 		// フィールド配列を初期化
 		for(int i=0; i<field.length; i++) {
@@ -71,13 +86,6 @@ public class Field {
 				}
 			}
 		}
-		// TODO
-		field[12][1] = COLOR_RED;
-		field[12][2] = COLOR_GREEN;
-		field[12][3] = COLOR_BLUE;
-		field[12][4] = COLOR_YELLOW;
-		field[12][5] = COLOR_PURPLE;
-		field[12][6] = COLOR_O;
 	}
 
 	/**
@@ -174,9 +182,10 @@ public class Field {
 
 	/**
 	 * 落下処理
+	 *
+	 * @param list アニメーションリスト
 	 */
-	public void drop(List<Animation> list) {
-
+	public void drop(List<BaseAnimation> list) {
 		// フィールドを下から上に向かって走査する
 		for(int i=field.length-1; i>=0; i--) {
 			for(int j=0; j<field[i].length; j++) {
@@ -207,6 +216,91 @@ public class Field {
 	}
 
 	/**
+	 * 落下処理中判定
+	 *
+	 * @return true:処理中、false:処理完了
+	 */
+	public boolean isDrop() {
+		for(int i=0; i<field.length; i++) {
+			for(int j=0; j<field[i].length; j++) {
+				if(field[i][j] / TILE_HIDDEN > 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 消滅処理
+	 *
+	 * @return true:消滅処理対象あり、false:消滅処理対象なし
+	 */
+	public boolean vanish() {
+
+		boolean isVanish = false;
+
+		// 消滅チェック配列の初期化
+		for(int i=0; i<field.length; i++) {
+			for(int j=0; j<field[i].length; j++) {
+				vanish[i][j] = false;
+			}
+		}
+		for(int i=0; i<field.length; i++) {
+			for(int j=0; j<field[i].length; j++) {
+				// 空白マスと壁マスは処理対象外
+				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
+					continue;
+				}
+				// チェック済みのマスは処理対象外
+				if(vanish[i][j]) {
+					continue;
+				}
+				// 連結数カウンタを初期化
+				connectCount = 0;
+				// 消滅対象リストをクリア
+				vanishList.clear();
+				// 連結数をカウント
+				checkVanish(j, i);
+				// 連結数が規定値以上の場合
+				if(connectCount >= VANISH_COUNT) {
+					for(Point pos : vanishList) {
+						field[pos.y][pos.x] = COLOR_NONE;
+					}
+					// 消滅対象あり
+					isVanish = true;
+				}
+			}
+		}
+		return isVanish;
+	}
+
+	/**
+	 * 同じ色のぷよの連結数をカウントする
+	 *
+	 * @param x チェックの基点とするx座標
+	 * @param y チェックの基点とするy座標
+	 */
+	private void checkVanish(int x, int y) {
+		// 連結数カウンタを加算
+		connectCount++;
+		// 当マスはチェック済みとする
+		vanish[y][x] = true;
+		// 当マスを消滅対象リストに追加
+		vanishList.add(new Point(x, y));
+
+		// 4方向をチェックする
+		for(int i=0; i<DIRECTION_X.length && i<DIRECTION_Y.length; i++) {
+			// チェックする座標を取得
+			int distX = x + DIRECTION_X[i];
+			int distY = y + DIRECTION_Y[i];
+			if(!vanish[distY][distX] && field[y][x] == field[distY][distX]) {
+				checkVanish(distX, distY);
+			}
+		}
+	}
+
+	/**
 	 * 連結方向情報の更新
 	 */
 	private void updateConnect() {
@@ -230,10 +324,6 @@ public class Field {
 			}
 		}
 	}
-
-//	public void vanish() {
-//
-//	}
 
 	/**
 	 * 指定マスを一時非表示にする
