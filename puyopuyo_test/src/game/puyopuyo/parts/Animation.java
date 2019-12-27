@@ -7,7 +7,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-public class Animation {
+public class Animation extends BaseAnimation {
 
 	/** 画像イメージ */
 	private Image image;
@@ -15,8 +15,6 @@ public class Animation {
 	private Point current;
 	private Point to;
 	private int color;
-	/** 実行中フラグ */
-	private boolean running;
 
 	public Animation(Point from, Point to, int color) {
 
@@ -32,6 +30,7 @@ public class Animation {
 	/**
 	 * 更新処理
 	 */
+	@Override
 	public void update() {
 		if(current.y < to.y) {
 			current.y = current.y + 8;
@@ -45,6 +44,7 @@ public class Animation {
 	 *
 	 * @param g
 	 */
+	@Override
 	public void draw(Graphics g) {
 
 		g.drawImage(image,
@@ -116,12 +116,5 @@ public class Animation {
 		URL url = this.getClass().getClassLoader().getResource("images/puyo.gif");
 		ImageIcon icon = new ImageIcon(url);
 		image = icon.getImage();
-	}
-
-	/**
-	 * @return running
-	 */
-	public boolean isRunning() {
-		return running;
 	}
 }
