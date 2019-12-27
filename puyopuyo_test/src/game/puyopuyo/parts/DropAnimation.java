@@ -6,13 +6,20 @@ import java.awt.Point;
 import game.puyopuyo.common.CommonUtil;
 import game.puyopuyo.common.ImageManager;
 
-public class Animation extends BaseAnimation {
+public class DropAnimation extends BaseAnimation {
 
 	private Point current;
 	private Point to;
 	private int color;
 
-	public Animation(Point from, Point to, int color) {
+	/**
+	 * コンストラクタ
+	 *
+	 * @param from
+	 * @param to
+	 * @param color
+	 */
+	public DropAnimation(Point from, Point to, int color) {
 
 		this.current = CommonUtil.grid2Pixel(from);
 		this.to      = CommonUtil.grid2Pixel(to);

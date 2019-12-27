@@ -201,7 +201,7 @@ public class Field {
 					} while(field[k][j] == COLOR_NONE);
 
 					// 落下アニメーションをリストに追加
-					list.add(new Animation(
+					list.add(new DropAnimation(
 							new Point(j, i),
 							new Point(j, k-1),
 							field[i][j]));
@@ -236,7 +236,7 @@ public class Field {
 	 *
 	 * @return true:消滅処理対象あり、false:消滅処理対象なし
 	 */
-	public boolean vanish() {
+	public boolean vanish(List<BaseAnimation> list) {
 
 		boolean isVanish = false;
 
@@ -265,6 +265,8 @@ public class Field {
 				// 連結数が規定値以上の場合
 				if(connectCount >= VANISH_COUNT) {
 					for(Point pos : vanishList) {
+						// 消滅アニメーションをリストに追加
+						list.add(new VanishAnimation(pos, field[pos.y][pos.x]));
 						field[pos.y][pos.x] = COLOR_NONE;
 					}
 					// 消滅対象あり
@@ -298,6 +300,21 @@ public class Field {
 				checkVanish(distX, distY);
 			}
 		}
+	}
+
+	/**
+	 * 消滅処理中判定
+	 *
+	 * @param list
+	 * @return true:処理中、false:処理完了
+	 */
+	public boolean isVanish(List<BaseAnimation> list) {
+		for(BaseAnimation a : list) {
+			if(a instanceof VanishAnimation) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
