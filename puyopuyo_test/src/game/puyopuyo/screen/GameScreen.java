@@ -75,7 +75,9 @@ public class GameScreen extends BaseScreen {
 			Animation a = animation.get(i);
 			a.update();
 			if(!a.isRunning()) {
+				// 一時非表示を解除
 				field.displayTile(a.getTo());
+				// 完了したアニーメーションを削除
 				animation.remove(i);
 				i--;
 			}

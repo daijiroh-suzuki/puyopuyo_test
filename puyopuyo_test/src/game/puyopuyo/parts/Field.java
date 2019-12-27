@@ -40,6 +40,13 @@ public class Field {
 	/** 一時非表示 */
 	public static final int TILE_HIDDEN = 10;
 
+	/** x方向参照配列(上、右、下、左) */
+	private static final int[] DIRECTION_X = {0, 1, 0, -1};
+	/** y方向参照配列 (上、右、下、左)*/
+	private static final int[] DIRECTION_Y = {-1, 0, 1, 0};
+	/** 連結方向値配列 (上、右、下、左)*/
+	private static final int[] CONNECT_VAL = {1, 8, 2, 4};
+
 	/** 背景画像イメージ */
 	private Image bgImage;
 	/** ぷよ画像イメージ */
@@ -47,6 +54,8 @@ public class Field {
 
 	/** フィールド配列 */
 	private int[][] field;
+	/** 連結方向配列 */
+	private int[][] connect;
 
 	/**
 	 * コンストラクタ
@@ -58,6 +67,8 @@ public class Field {
 
 		// フィールド配列を生成
 		field = new int[ROW][COL];
+		// 連結方向配列を生成
+		connect = new int[ROW][COL];
 
 		// フィールド配列を初期化
 		for(int i=0; i<field.length; i++) {
@@ -86,6 +97,9 @@ public class Field {
 	 * @param g
 	 */
 	public void draw(Graphics g) {
+
+		// 連結方向情報を更新
+		updateConnect();
 
 		// 背景画像を描画
 		g.drawImage(bgImage,
@@ -123,9 +137,9 @@ public class Field {
 						j * TILE_SIZE + TILE_SIZE,
 						i * TILE_SIZE + TILE_SIZE,
 						field[i][j] * TILE_SIZE,
-						0,
+						connect[i][j] * TILE_SIZE,
 						field[i][j] * TILE_SIZE + TILE_SIZE,
-						TILE_SIZE,
+						connect[i][j] * TILE_SIZE + TILE_SIZE,
 						null);
 			}
 		}
@@ -205,6 +219,35 @@ public class Field {
 		}
 		return list;
 	}
+
+	/**
+	 * 連結方向情報の更新
+	 */
+	public void updateConnect() {
+		for(int i=0; i<field.length; i++) {
+			for(int j=0; j<field[i].length; j++) {
+				connect[i][j] = 0;
+
+				// 空白マスと壁マスは処理対象外
+				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
+					continue;
+				}
+
+				int newConnect = 0;
+				// 4方向をチェックする
+				for(int k=0; k<DIRECTION_X.length && k<DIRECTION_Y.length; k++) {
+					if(field[i][j] == field[i+DIRECTION_Y[k]][j+DIRECTION_X[k]]) {
+						newConnect = newConnect + CONNECT_VAL[k];
+					}
+				}
+				connect[i][j] = newConnect;
+			}
+		}
+	}
+
+//	public void vanish() {
+//
+//	}
 
 	/**
 	 * 指定マスを一時非表示にする
