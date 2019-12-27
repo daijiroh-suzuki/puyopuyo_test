@@ -219,7 +219,7 @@ public class Field {
 	/**
 	 * 連結方向情報の更新
 	 */
-	public void updateConnect() {
+	private void updateConnect() {
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
 				connect[i][j] = 0;
