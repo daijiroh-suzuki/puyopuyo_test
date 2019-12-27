@@ -34,7 +34,7 @@ public class Animation {
 	 */
 	public void update() {
 		if(current.y < to.y) {
-			current.y = current.y + 5;
+			current.y = current.y + 8;
 		} else {
 			running = false;
 		}

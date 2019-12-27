@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -186,9 +185,7 @@ public class Field {
 	/**
 	 * 落下処理
 	 */
-	public List<Animation> drop() {
-
-		List<Animation> list = new ArrayList<Animation>();
+	public void drop(List<Animation> list) {
 
 		// フィールドを下から上に向かって走査する
 		for(int i=field.length-1; i>=0; i--) {
@@ -217,7 +214,6 @@ public class Field {
 				}
 			}
 		}
-		return list;
 	}
 
 	/**

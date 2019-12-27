@@ -52,7 +52,7 @@ public class GameScreen extends BaseScreen {
 			boolean isFixed = kumiPuyo.move(KumiPuyo.DIR_DOWN);
 			if(isFixed) {
 				// 落下処理
-				animation.addAll(field.drop());
+				field.drop(animation);
 				// 新しい組ぷよを生成
 				kumiPuyo = new KumiPuyo(field);
 			}
