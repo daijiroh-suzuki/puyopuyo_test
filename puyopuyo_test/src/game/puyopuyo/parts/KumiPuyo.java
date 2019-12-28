@@ -53,9 +53,9 @@ public class KumiPuyo {
 		}
 
 		kumiPuyo[1][1] = new Random().nextInt(difficulty);
-		kumiPuyo[2][1] = new Random().nextInt(difficulty);
+		kumiPuyo[0][1] = new Random().nextInt(difficulty);
 
-		pos = new Point(2, 0);
+		pos = new Point(2, 1);
 	}
 
 	/**

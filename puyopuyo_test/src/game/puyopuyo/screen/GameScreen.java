@@ -1,14 +1,17 @@
 package game.puyopuyo.screen;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.puyopuyo.MainPanel;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.BaseAnimation;
 import game.puyopuyo.parts.DropAnimation;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
+import game.puyopuyo.parts.NextPuyo;
 
 public class GameScreen extends BaseScreen {
 
@@ -23,6 +26,8 @@ public class GameScreen extends BaseScreen {
 	private Controller controller;
 	/** フィールド */
 	private Field field;
+	/** Nextぷよ */
+	private NextPuyo nextPuyo;
 	/** 組ぷよ */
 	private KumiPuyo kumiPuyo;
 	/** アニメーション */
@@ -40,11 +45,13 @@ public class GameScreen extends BaseScreen {
 		this.controller = controller;
 		// フィールドを生成
 		field = new Field();
+		// Nextぷよを生成
+		nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 		// 組ぷよを生成
 		kumiPuyo = new KumiPuyo(field);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
-
+		// 処理フェーズを初期化
 		phase = PHASE_CONTROL;
 	}
 
@@ -123,8 +130,14 @@ public class GameScreen extends BaseScreen {
 	 */
 	@Override
 	public void draw(Graphics g) {
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, MainPanel.WIDTH, MainPanel.HEIGHT);
+
 		// フィールドを描画
 		field.draw(g);
+		// Nextぷよを描画
+		nextPuyo.draw(g);
 		// 組ぷよを描画
 		if(kumiPuyo != null) {
 			kumiPuyo.draw(g);

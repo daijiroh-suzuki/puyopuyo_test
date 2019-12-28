@@ -13,7 +13,7 @@ public class Field {
 	/** フィールドの列数 （マス数）*/
 	private static final int COL = 8;
 	/** フィールドの行数 （マス数）*/
-	private static final int ROW = 14;
+	private static final int ROW = 15;
 
 	/** 1マスのサイズ(ピクセル) */
 	public static final int TILE_SIZE = 32;
@@ -101,13 +101,13 @@ public class Field {
 		// 背景画像を描画
 		g.drawImage(ImageManager.bgImage,
 				0,
-				0,
+				TILE_SIZE, // 先頭行は非表示
 				COL * TILE_SIZE,
 				ROW * TILE_SIZE,
 				0,
 				0,
-				COL * TILE_SIZE,
-				ROW * TILE_SIZE,
+				ImageManager.bgImage.getWidth(null),
+				ImageManager.bgImage.getHeight(null),
 				null);
 
 		// フィールド配列を描画
