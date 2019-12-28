@@ -2,6 +2,7 @@ package game.puyopuyo.parts;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
 import java.util.Random;
 
 import game.puyopuyo.common.ImageManager;
@@ -15,14 +16,18 @@ public class NextPuyo {
 	/** 1マスのサイズ(ピクセル) */
 	private static final int TILE_SIZE = Field.TILE_SIZE;
 
+	/** 表示位置x座標(ピクセル) */
+	private int x;
+	/** 表示位置y座標(ピクセル) */
+	private int y;
+
 	/** 難易度（出現するぷよの色数） */
 	private int difficulty;
 
-	private int x;
-	private int y;
-
-	/** NEXTぷよの形を格納 */
-	private int[][] form;
+	/** NEXTぷよリスト */
+	private LinkedList<int[][]> nextList;
+	/** NEXTぷよリストのサイズ */
+	private int size;
 
 	/**
 	 * コンストラクタ
@@ -36,24 +41,35 @@ public class NextPuyo {
 
 		// 難易度を設定
 		difficulty = 5;
-
-		// NEXTぷよ配列を生成
-		form = new int[ROW][COL];
-		init();
+		// NEXTぷよリストのサイズを設定
+		size = 2;
+		// NEXTぷよリストを生成
+		nextList = new LinkedList<int[][]>();
+		for(int i=0; i<size; i++) {
+			generate();
+		}
 	}
 
 	/**
-	 * 初期化処理
+	 * NEXTぷよ生成処理
 	 */
-	private void init() {
+	private void generate() {
+		// NEXTぷよ配列を生成
+		int[][] form = new int[ROW][COL];
+
 		// NEXTぷよを初期化
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
 				form[i][j] = Field.COLOR_NONE;
 			}
 		}
+		// とりあえず縦2つのパターンのみ生成
+		// 後々フィーバーのパターンにも対応できるように組ぷよの形を配列で保持する
 		form[1][1] = new Random().nextInt(difficulty);
 		form[0][1] = new Random().nextInt(difficulty);
+
+		// NEXTぷよリストに追加
+		nextList.add(form);
 	}
 
 	/**
@@ -66,23 +82,27 @@ public class NextPuyo {
 		g.setColor(Color.WHITE);
 		g.drawString("NEXT", x, y);
 
-		for(int i=0; i<ROW; i++) {
-			for(int j=0; j<COL; j++) {
-				// 空白マスは描画しない
-				if(form[i][j] == Field.COLOR_NONE) {
-					continue;
+		int cnt = 0;
+		for(int[][] next : nextList) {
+			for(int i=0; i<ROW; i++) {
+				for(int j=0; j<COL; j++) {
+					// 空白マスは描画しない
+					if(next[i][j] == Field.COLOR_NONE) {
+						continue;
+					}
+					g.drawImage(ImageManager.puyoImage,
+							x + j * TILE_SIZE,
+							y + i * TILE_SIZE + cnt * ROW * TILE_SIZE,
+							x + j * TILE_SIZE + TILE_SIZE,
+							y + i * TILE_SIZE + cnt * ROW * TILE_SIZE + TILE_SIZE,
+							next[i][j] * TILE_SIZE,
+							0,
+							next[i][j] * TILE_SIZE + TILE_SIZE,
+							TILE_SIZE,
+							null);
 				}
-				g.drawImage(ImageManager.puyoImage,
-						x + j * TILE_SIZE,
-						y + i * TILE_SIZE,
-						x + j * TILE_SIZE + TILE_SIZE,
-						y + i * TILE_SIZE + TILE_SIZE,
-						form[i][j] * TILE_SIZE,
-						0,
-						form[i][j] * TILE_SIZE + TILE_SIZE,
-						TILE_SIZE,
-						null);
 			}
+			cnt++;
 		}
 	}
 
@@ -92,13 +112,7 @@ public class NextPuyo {
 	 * @return
 	 */
 	public int[][] pop() {
-		int[][] ret = new int[ROW][COL];
-		for(int i=0; i<ret.length; i++) {
-			for(int j=0; j<ret[i].length; j++) {
-				ret[i][j] = form[i][j];
-			}
-		}
-		init();
-		return ret;
+		generate();
+		return nextList.pop();
 	}
 }
