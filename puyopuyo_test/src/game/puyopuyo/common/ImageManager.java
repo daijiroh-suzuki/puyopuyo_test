@@ -11,6 +11,8 @@ public class ImageManager {
 	public static Image bgImage;
 	/** ぷよ画像Image */
 	public static Image puyoImage;
+	/** ぷよ画像2Image */
+	public static Image puyoImage2;
 
 	/**
 	 * 初期化処理
@@ -32,5 +34,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/puyo.gif");
 		icon = new ImageIcon(url);
 		puyoImage = icon.getImage();
+
+		// ぷよ画像2をロード
+		url = ImageManager.class.getClassLoader().getResource("images/puyo2.gif");
+		icon = new ImageIcon(url);
+		puyoImage2 = icon.getImage();
 	}
 }

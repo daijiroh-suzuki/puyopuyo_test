@@ -29,6 +29,9 @@ public class KumiPuyo {
 	/** 組ぷよの位置 */
 	private Point pos;
 
+	/** 軸ぷよの位置 */
+	private Point axis;
+
 	/**
 	 * コンストラクタ
 	 */
@@ -40,6 +43,8 @@ public class KumiPuyo {
 		this.form = form;
 		// 組ぷよの位置を設定
 		pos = new Point(2, 1);
+		// 軸ぷよの位置を設定
+		axis = new Point(1, 1);
 	}
 
 	/**
@@ -112,16 +117,30 @@ public class KumiPuyo {
 				if(form[i][j] == Field.COLOR_NONE) {
 					continue;
 				}
-				g.drawImage(ImageManager.puyoImage,
-						(pos.x + j) * TILE_SIZE,
-						(pos.y + i) * TILE_SIZE,
-						(pos.x + j) * TILE_SIZE + TILE_SIZE,
-						(pos.y + i) * TILE_SIZE + TILE_SIZE,
-						form[i][j] * TILE_SIZE,
-						0,
-						form[i][j] * TILE_SIZE + TILE_SIZE,
-						TILE_SIZE,
-						null);
+				// 軸ぷよは画像を変更
+				if(j == axis.x && i == axis.y) {
+					g.drawImage(ImageManager.puyoImage2,
+							(pos.x + j) * TILE_SIZE,
+							(pos.y + i) * TILE_SIZE,
+							(pos.x + j) * TILE_SIZE + TILE_SIZE,
+							(pos.y + i) * TILE_SIZE + TILE_SIZE,
+							form[i][j] * TILE_SIZE,
+							0,
+							form[i][j] * TILE_SIZE + TILE_SIZE,
+							TILE_SIZE,
+							null);
+				} else {
+					g.drawImage(ImageManager.puyoImage,
+							(pos.x + j) * TILE_SIZE,
+							(pos.y + i) * TILE_SIZE,
+							(pos.x + j) * TILE_SIZE + TILE_SIZE,
+							(pos.y + i) * TILE_SIZE + TILE_SIZE,
+							form[i][j] * TILE_SIZE,
+							0,
+							form[i][j] * TILE_SIZE + TILE_SIZE,
+							TILE_SIZE,
+							null);
+				}
 			}
 		}
 	}
