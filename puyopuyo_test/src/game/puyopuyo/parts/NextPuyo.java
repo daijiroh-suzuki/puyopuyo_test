@@ -1,5 +1,6 @@
 package game.puyopuyo.parts;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
@@ -7,7 +8,7 @@ import game.puyopuyo.common.ImageManager;
 
 public class NextPuyo {
 
-	// 組ぷよのサイズ
+	// NEXTぷよのサイズ
 	private static final int COL = 3;
 	private static final int ROW = 3;
 
@@ -20,7 +21,7 @@ public class NextPuyo {
 	private int x;
 	private int y;
 
-	/** 組ぷよの形を格納 */
+	/** NEXTぷよの形を格納 */
 	private int[][] form;
 
 	/**
@@ -36,7 +37,16 @@ public class NextPuyo {
 		// 難易度を設定
 		difficulty = 5;
 
+		// NEXTぷよ配列を生成
 		form = new int[ROW][COL];
+		init();
+	}
+
+	/**
+	 * 初期化処理
+	 */
+	private void init() {
+		// NEXTぷよを初期化
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
 				form[i][j] = Field.COLOR_NONE;
@@ -52,6 +62,9 @@ public class NextPuyo {
 	 * @param g
 	 */
 	public void draw(Graphics g) {
+		// TODO
+		g.setColor(Color.WHITE);
+		g.drawString("NEXT", x, y);
 
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
@@ -71,5 +84,21 @@ public class NextPuyo {
 						null);
 			}
 		}
+	}
+
+	/**
+	 * NEXTぷよを取得
+	 *
+	 * @return
+	 */
+	public int[][] pop() {
+		int[][] ret = new int[ROW][COL];
+		for(int i=0; i<ret.length; i++) {
+			for(int j=0; j<ret[i].length; j++) {
+				ret[i][j] = form[i][j];
+			}
+		}
+		init();
+		return ret;
 	}
 }

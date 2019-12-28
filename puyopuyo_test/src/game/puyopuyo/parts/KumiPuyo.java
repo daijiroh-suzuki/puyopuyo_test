@@ -2,7 +2,6 @@ package game.puyopuyo.parts;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Random;
 
 import game.puyopuyo.common.ImageManager;
 
@@ -24,11 +23,8 @@ public class KumiPuyo {
 	/** フィールド参照 */
 	private Field field;
 
-	/** 難易度（出現するぷよの色数） */
-	private int difficulty;
-
 	/** 組ぷよの形を格納 */
-	private int[][] kumiPuyo;
+	private int[][] form;
 
 	/** 組ぷよの位置 */
 	private Point pos;
@@ -36,25 +32,13 @@ public class KumiPuyo {
 	/**
 	 * コンストラクタ
 	 */
-	public KumiPuyo(Field field) {
+	public KumiPuyo(Field field, int[][] form) {
 
 		// フィールド参照を取得
 		this.field = field;
-
-		// 難易度を設定
-		difficulty = 5;
-
-		// 組ぷよを初期化
-		kumiPuyo = new int[ROW][COL];
-		for(int i=0; i<ROW; i++) {
-			for(int j=0; j<COL; j++) {
-				kumiPuyo[i][j] = Field.COLOR_NONE;
-			}
-		}
-
-		kumiPuyo[1][1] = new Random().nextInt(difficulty);
-		kumiPuyo[0][1] = new Random().nextInt(difficulty);
-
+		// 組ぷよの形を取得
+		this.form = form;
+		// 組ぷよの位置を設定
 		pos = new Point(2, 1);
 	}
 
@@ -68,28 +52,28 @@ public class KumiPuyo {
 		switch(direction) {
 		case DIR_UP:
 			Point newPos = new Point(pos.x, pos.y - 1);
-			if(field.isMovable(newPos, kumiPuyo)) {
+			if(field.isMovable(newPos, form)) {
 				pos = newPos;
 			}
 			break;
 		case DIR_DOWN:
 			newPos = new Point(pos.x, pos.y + 1);
-			if(field.isMovable(newPos, kumiPuyo)) {
+			if(field.isMovable(newPos, form)) {
 				pos = newPos;
 			} else {
-				field.fixPuyo(pos, kumiPuyo);
+				field.fixPuyo(pos, form);
 				return true;
 			}
 			break;
 		case DIR_RIGHT:
 			newPos = new Point(pos.x + 1, pos.y);
-			if(field.isMovable(newPos, kumiPuyo)) {
+			if(field.isMovable(newPos, form)) {
 				pos = newPos;
 			}
 			break;
 		case DIR_LEFT:
 			newPos = new Point(pos.x - 1, pos.y);
-			if(field.isMovable(newPos, kumiPuyo)) {
+			if(field.isMovable(newPos, form)) {
 				pos = newPos;
 			}
 			break;
@@ -101,16 +85,16 @@ public class KumiPuyo {
 	 * 回転処理
 	 */
 	public void turn() {
-		int[][] turnedKumiPuyo = new int[ROW][COL];
+		int[][] turnedForm = new int[ROW][COL];
 
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
-				turnedKumiPuyo[j][ROW - 1 - i] = kumiPuyo[i][j];
+				turnedForm[j][ROW - 1 - i] = form[i][j];
 			}
 		}
 
-		if(field.isMovable(pos, turnedKumiPuyo)) {
-			kumiPuyo = turnedKumiPuyo;
+		if(field.isMovable(pos, turnedForm)) {
+			form = turnedForm;
 		}
 	}
 
@@ -125,7 +109,7 @@ public class KumiPuyo {
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
 				// 空白マスは描画しない
-				if(kumiPuyo[i][j] == Field.COLOR_NONE) {
+				if(form[i][j] == Field.COLOR_NONE) {
 					continue;
 				}
 				g.drawImage(ImageManager.puyoImage,
@@ -133,9 +117,9 @@ public class KumiPuyo {
 						(pos.y + i) * TILE_SIZE,
 						(pos.x + j) * TILE_SIZE + TILE_SIZE,
 						(pos.y + i) * TILE_SIZE + TILE_SIZE,
-						kumiPuyo[i][j] * TILE_SIZE,
+						form[i][j] * TILE_SIZE,
 						0,
-						kumiPuyo[i][j] * TILE_SIZE + TILE_SIZE,
+						form[i][j] * TILE_SIZE + TILE_SIZE,
 						TILE_SIZE,
 						null);
 			}

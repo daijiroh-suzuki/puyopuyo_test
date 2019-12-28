@@ -48,7 +48,7 @@ public class GameScreen extends BaseScreen {
 		// Nextぷよを生成
 		nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 		// 組ぷよを生成
-		kumiPuyo = new KumiPuyo(field);
+		kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
@@ -97,7 +97,7 @@ public class GameScreen extends BaseScreen {
 					phase = PHASE_VANISH;
 				} else {
 					// 新しい組ぷよを生成
-					kumiPuyo = new KumiPuyo(field);
+					kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 					phase = PHASE_CONTROL;
 				}
 			}

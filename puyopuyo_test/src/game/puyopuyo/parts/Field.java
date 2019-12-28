@@ -1,6 +1,5 @@
 package game.puyopuyo.parts;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -113,9 +112,9 @@ public class Field {
 		// フィールド配列を描画
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
-				// TODO (仮処理)枠を描画
-				g.setColor(Color.WHITE);
-				g.drawRect(j*TILE_SIZE, i*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+//				// TODO (仮処理)枠を描画
+//				g.setColor(Color.WHITE);
+//				g.drawRect(j*TILE_SIZE, i*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 				// 空白マスと壁マスは描画しない
 				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
