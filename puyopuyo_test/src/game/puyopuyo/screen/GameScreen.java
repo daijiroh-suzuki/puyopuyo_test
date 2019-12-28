@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.puyopuyo.controller.Controller;
-import game.puyopuyo.parts.Animation;
 import game.puyopuyo.parts.BaseAnimation;
+import game.puyopuyo.parts.DropAnimation;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 
@@ -86,7 +86,7 @@ public class GameScreen extends BaseScreen {
 		} else if(phase == PHASE_DROP) { //------------------------------------
 			if(!field.isDrop()) {
 				// 消滅処理
-				if(field.vanish()) {
+				if(field.vanish(animation)) {
 					phase = PHASE_VANISH;
 				} else {
 					// 新しい組ぷよを生成
@@ -95,18 +95,22 @@ public class GameScreen extends BaseScreen {
 				}
 			}
 		} else if(phase == PHASE_VANISH) { //----------------------------------
-			// 落下処理
-			field.drop(animation);
-			phase = PHASE_DROP;
+			if(!field.isVanish(animation)) {
+				// 落下処理
+				field.drop(animation);
+				phase = PHASE_DROP;
+			}
 		}
 
 		// アニメーション更新
 		for(int i=0; i<animation.size(); i++) {
-			Animation a = (Animation)animation.get(i);
+			BaseAnimation a = animation.get(i);
 			a.update();
 			if(!a.isRunning()) {
-				// 一時非表示を解除
-				field.displayTile(a.getTo());
+				if(a instanceof DropAnimation) {
+					// 一時非表示を解除
+					field.displayTile(((DropAnimation)a).getTo());
+				}
 				// 完了したアニーメーションを削除
 				animation.remove(i);
 				i--;
