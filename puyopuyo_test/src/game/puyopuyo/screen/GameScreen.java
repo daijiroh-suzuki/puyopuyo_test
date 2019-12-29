@@ -12,6 +12,7 @@ import game.puyopuyo.parts.DropAnimation;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.NextPuyo;
+import game.puyopuyo.parts.Score;
 
 public class GameScreen extends BaseScreen {
 
@@ -30,6 +31,8 @@ public class GameScreen extends BaseScreen {
 	private NextPuyo nextPuyo;
 	/** 組ぷよ */
 	private KumiPuyo kumiPuyo;
+	/** スコア */
+	private Score score;
 	/** アニメーション */
 	private List<BaseAnimation> animation;
 	/** 処理フェーズ */
@@ -49,6 +52,8 @@ public class GameScreen extends BaseScreen {
 		nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 		// 組ぷよを生成
 		kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+		// スコアを生成
+		score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
@@ -142,6 +147,8 @@ public class GameScreen extends BaseScreen {
 		if(kumiPuyo != null) {
 			kumiPuyo.draw(g);
 		}
+		// スコアを描画
+		score.draw(g);
 		// アニメーション描画
 		for(BaseAnimation a : animation) {
 			a.draw(g);
