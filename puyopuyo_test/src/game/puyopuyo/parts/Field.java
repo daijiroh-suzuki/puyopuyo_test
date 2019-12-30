@@ -59,6 +59,9 @@ public class Field {
 	/** 消滅対象リスト */
 	private List<Point> vanishList;
 
+	/** スコア */
+	private int score;
+
 	/**
 	 * コンストラクタ
 	 */
@@ -72,6 +75,8 @@ public class Field {
 		vanish = new boolean[ROW][COL];
 		// 消滅対象リストを生成
 		vanishList = new ArrayList<Point>();
+		// スコアを初期化
+		score = 0;
 
 		// フィールド配列を初期化
 		for(int i=0; i<field.length; i++) {
@@ -267,6 +272,7 @@ public class Field {
 						// 消滅アニメーションをリストに追加
 						list.add(new VanishAnimation(pos, field[pos.y][pos.x]));
 						field[pos.y][pos.x] = COLOR_NONE;
+						score = score + 10;
 					}
 					// 消滅対象あり
 					isVanish = true;
@@ -377,5 +383,14 @@ public class Field {
 	 */
 	public void displayTile(Point pos) {
 		displayTile(pos.x, pos.y);
+	}
+
+	/**
+	 * スコアを取得
+	 *
+	 * @return
+	 */
+	public int getScore() {
+		return score;
 	}
 }

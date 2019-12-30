@@ -101,6 +101,8 @@ public class GameScreen extends BaseScreen {
 				if(field.vanish(animation)) {
 					phase = PHASE_VANISH;
 				} else {
+					// スコアを更新
+					score.setScore(field.getScore());
 					// 新しい組ぷよを生成
 					kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 					phase = PHASE_CONTROL;

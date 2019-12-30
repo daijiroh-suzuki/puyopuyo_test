@@ -10,6 +10,9 @@ public class Score {
 	/** 表示位置y座標 */
 	private int y;
 
+	/** スコア */
+	private int score;
+
 	/**
 	 * コンストラクタ
 	 *
@@ -19,6 +22,7 @@ public class Score {
 	public Score(int x, int y) {
 		this.x = x;
 		this.y = y;
+		score = 0;
 	}
 
 	/**
@@ -28,6 +32,13 @@ public class Score {
 	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("SCORE", x, y);
+		g.drawString("SCORE : " + score, x, y);
+	}
+
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
 	}
 }
