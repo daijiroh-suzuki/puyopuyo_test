@@ -3,6 +3,7 @@ package game.puyopuyo.parts;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import game.puyopuyo.common.ImageManager;
@@ -21,12 +22,12 @@ public class Field {
 	public static final int COLOR_NONE   = -1;
 	/** ぷよの色：赤 */
 	public static final int COLOR_RED    = 0;
-	/** ぷよの色：緑 */
-	public static final int COLOR_GREEN  = 1;
 	/** ぷよの色：青 */
-	public static final int COLOR_BLUE   = 2;
+	public static final int COLOR_BLUE  = 1;
 	/** ぷよの色：黄色 */
-	public static final int COLOR_YELLOW = 3;
+	public static final int COLOR_YELLOW   = 2;
+	/** ぷよの色：緑 */
+	public static final int COLOR_GREEN = 3;
 	/** ぷよの色：紫 */
 	public static final int COLOR_PURPLE = 4;
 	/** ぷよの色：おじゃま */
@@ -37,12 +38,19 @@ public class Field {
 	/** 一時非表示 */
 	public static final int TILE_HIDDEN = 10;
 
-	/** x方向参照配列(上、右、下、左) */
+	/** x方向参照配列(上、右、下、左) */ /* Collection.unmodifiableListを利用した方がいいけど妥協 */
 	private static final int[] DIRECTION_X = {0, 1, 0, -1};
 	/** y方向参照配列 (上、右、下、左)*/
 	private static final int[] DIRECTION_Y = {-1, 0, 1, 0};
 	/** 連結方向値配列 (上、右、下、左)*/
 	private static final int[] CONNECT_VAL = {1, 8, 2, 4};
+
+	/** 連鎖ボーナステーブル */
+	private static final int[] CHAIN_BONUS = {0, 8, 16, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, 480, 512};
+	/** 連結ボーナステーブル */
+	private static final int[] CONNECT_BONUS = {0, 2, 3, 4, 5, 6, 7, 10};
+	/** 色数ボーナステーブル */
+	private static final int[] COLOR_BONUS = {0, 3, 6, 12, 24};
 
 	/** ぷよが消滅する連結数 */
 	private static final int VANISH_COUNT = 4;
@@ -58,9 +66,19 @@ public class Field {
 	private int connectCount = 0;
 	/** 消滅対象リスト */
 	private List<Point> vanishList;
+	/** 連鎖数 */
+	private int chain = 0;
 
 	/** スコア */
-	private int score;
+	private int score = 0;
+	/** ぷよの消えた数 */
+	private int pcnt = 0;
+	/** 連鎖ボーナス */
+	private int chainBonus = 0;
+	/** 連結ボーナス */
+	private int connectBonus = 0;
+	/** 色数ボーナス */
+	private int colorBonus = 0;
 
 	/**
 	 * コンストラクタ
@@ -75,8 +93,6 @@ public class Field {
 		vanish = new boolean[ROW][COL];
 		// 消滅対象リストを生成
 		vanishList = new ArrayList<Point>();
-		// スコアを初期化
-		score = 0;
 
 		// フィールド配列を初期化
 		for(int i=0; i<field.length; i++) {
@@ -244,6 +260,15 @@ public class Field {
 
 		boolean isVanish = false;
 
+		// ぷよの消えた数を初期化
+		pcnt = 0;
+		// 連結ボーナスを初期化
+		connectBonus = 0;
+		// 色数ボーナスを初期化
+		colorBonus = 0;
+		// 色数取得用HashSet
+		HashSet<Integer> colorSet = new HashSet<Integer>();
+
 		// 消滅チェック配列の初期化
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
@@ -269,15 +294,44 @@ public class Field {
 				// 連結数が規定値以上の場合
 				if(connectCount >= VANISH_COUNT) {
 					for(Point pos : vanishList) {
+						int clr = field[pos.y][pos.x];
+						// ぷよの消えた数を加算
+						pcnt++;
+						// 色数取得用HashSetに追加
+						colorSet.add(clr);
 						// 消滅アニメーションをリストに追加
-						list.add(new VanishAnimation(pos, field[pos.y][pos.x]));
+						list.add(new VanishAnimation(pos, clr));
 						field[pos.y][pos.x] = COLOR_NONE;
-						score = score + 10;
 					}
+					// 連結ボーナスを計算
+					int idx = vanishList.size() - VANISH_COUNT;
+					connectBonus += CONNECT_BONUS[idx];
+
 					// 消滅対象あり
 					isVanish = true;
 				}
 			}
+		}
+		if(isVanish) {
+			// 消滅対象ありの場合
+			// 連鎖数を加算
+			chain++;
+			// 連鎖ボーナスを計算
+			chainBonus = CHAIN_BONUS[chain - 1];
+			// 色数ボーナスを計算
+			colorBonus = COLOR_BONUS[colorSet.size() - 1];
+
+			// 各ボーナスの合計値が0の場合、1として計算
+			int bonus = chainBonus + connectBonus + colorBonus;
+			if(bonus == 0) {
+				bonus = 1;
+			}
+			// スコアを計算
+			// ぷよの消えた数×10 (連鎖ボーナス + 連結ボーナス + 色数ボーナス)
+			score += pcnt * 10 * bonus;
+		} else {
+			// 消滅対象なしの場合は連鎖数を初期化
+			chain = 0;
 		}
 		return isVanish;
 	}

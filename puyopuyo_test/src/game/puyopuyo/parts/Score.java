@@ -35,9 +35,20 @@ public class Score {
 		g.drawString("SCORE : " + score, x, y);
 	}
 
+	/**
+	 * スコアを取得
+	 *
+	 * @return
+	 */
 	public int getScore() {
 		return score;
 	}
+
+	/**
+	 * スコアを設定
+	 *
+	 * @param score
+	 */
 	public void setScore(int score) {
 		this.score = score;
 	}
