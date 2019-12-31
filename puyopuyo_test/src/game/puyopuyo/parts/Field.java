@@ -1,5 +1,6 @@
 package game.puyopuyo.parts;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -174,6 +175,9 @@ public class Field {
 						connect[i][j] * TILE_SIZE + TILE_SIZE,
 						null);
 			}
+			// 13段目は非表示
+			g.setColor(new Color(0, 0, 0, 20));
+			g.fillRect(0, 0, COL * TILE_SIZE, 2 * TILE_SIZE);
 		}
 	}
 
