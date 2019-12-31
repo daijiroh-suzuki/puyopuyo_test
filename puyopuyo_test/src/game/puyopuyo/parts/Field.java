@@ -23,11 +23,11 @@ public class Field {
 	/** ぷよの色：赤 */
 	public static final int COLOR_RED    = 0;
 	/** ぷよの色：青 */
-	public static final int COLOR_BLUE  = 1;
+	public static final int COLOR_BLUE   = 1;
 	/** ぷよの色：黄色 */
-	public static final int COLOR_YELLOW   = 2;
+	public static final int COLOR_YELLOW = 2;
 	/** ぷよの色：緑 */
-	public static final int COLOR_GREEN = 3;
+	public static final int COLOR_GREEN  = 3;
 	/** ぷよの色：紫 */
 	public static final int COLOR_PURPLE = 4;
 	/** ぷよの色：おじゃま */
@@ -80,6 +80,9 @@ public class Field {
 	/** 色数ボーナス */
 	private int colorBonus = 0;
 
+	/** ゲームオーバーマス */
+	private Point gameOver;
+
 	/**
 	 * コンストラクタ
 	 */
@@ -94,6 +97,14 @@ public class Field {
 		// 消滅対象リストを生成
 		vanishList = new ArrayList<Point>();
 
+		// 初期化処理
+		init();
+	}
+
+	/**
+	 * 初期化処理
+	 */
+	public void init() {
 		// フィールド配列を初期化
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
@@ -106,6 +117,10 @@ public class Field {
 				}
 			}
 		}
+		// ゲームオーバーマスを設定
+		gameOver = new Point(3, 2);
+		// スコアを初期化
+		score = 0;
 	}
 
 	/**
@@ -399,6 +414,18 @@ public class Field {
 				connect[i][j] = newConnect;
 			}
 		}
+	}
+
+	/**
+	 * ゲームオーバー判定
+	 *
+	 * @return true:ゲームオーバー
+	 */
+	public boolean isGameOver() {
+		if(field[gameOver.y][gameOver.x] != COLOR_NONE) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

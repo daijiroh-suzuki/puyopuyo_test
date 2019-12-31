@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import game.puyopuyo.MainPanel;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.BaseAnimation;
@@ -100,6 +102,11 @@ public class GameScreen extends BaseScreen {
 				// 消滅処理
 				if(field.vanish(animation)) {
 					phase = PHASE_VANISH;
+				} else if(field.isGameOver()) {
+					// ポップアップを表示
+					JOptionPane.showMessageDialog(null, "ゲームオーバー");
+					// フィールドを初期化
+					field.init();
 				} else {
 					// スコアを更新
 					score.setScore(field.getScore());
