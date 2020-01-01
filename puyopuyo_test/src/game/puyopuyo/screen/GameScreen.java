@@ -8,9 +8,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import game.puyopuyo.MainPanel;
+import game.puyopuyo.animation.BaseAnimation;
+import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.controller.Controller;
-import game.puyopuyo.parts.BaseAnimation;
-import game.puyopuyo.parts.DropAnimation;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.NextPuyo;
@@ -39,6 +39,9 @@ public class GameScreen extends BaseScreen {
 	private List<BaseAnimation> animation;
 	/** 処理フェーズ */
 	private int phase;
+
+	/** フレームカウント */
+	private int frameCount;
 
 	/**
 	 * コンストラクタ
@@ -69,12 +72,14 @@ public class GameScreen extends BaseScreen {
 	public void update() {
 
 		if(phase == PHASE_CONTROL) { //----------------------------------------
+			frameCount++;
 			// キー操作
 			if(controller.isKeyUp()) {
 				// 上方向キー押下時
 				kumiPuyo.move(KumiPuyo.DIR_UP);
 				controller.setKeyUp(false);
-			} else if(controller.isKeyDown()) {
+			} else if(controller.isKeyDown() || frameCount >= 10) {
+				frameCount = 0;
 				// 下方向キー押下時
 				boolean isFixed = kumiPuyo.move(KumiPuyo.DIR_DOWN);
 				if(isFixed) {
