@@ -1,9 +1,10 @@
-package game.puyopuyo.parts;
+package game.puyopuyo.animation;
 
 import java.awt.Graphics;
 import java.awt.Point;
 
 import game.puyopuyo.common.ImageManager;
+import game.puyopuyo.parts.Field;
 
 public class VanishAnimation extends BaseAnimation {
 

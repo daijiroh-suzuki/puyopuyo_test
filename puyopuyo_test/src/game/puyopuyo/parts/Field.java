@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import game.puyopuyo.animation.BaseAnimation;
+import game.puyopuyo.animation.DropAnimation;
+import game.puyopuyo.animation.VanishAnimation;
 import game.puyopuyo.common.ImageManager;
 
 public class Field {

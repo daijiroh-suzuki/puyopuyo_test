@@ -1,4 +1,4 @@
-package game.puyopuyo.parts;
+package game.puyopuyo.animation;
 
 import java.awt.Graphics;
 
