@@ -110,6 +110,8 @@ public class GameScreen extends BaseScreen {
 			if(!field.isDrop()) {
 				// 消滅処理
 				if(field.vanish(animation)) {
+					// スコアを更新
+					score.setScore(field.getScore());
 					phase = PHASE_VANISH;
 				} else if(field.isGameOver()) {
 					// ポップアップを表示
@@ -117,8 +119,6 @@ public class GameScreen extends BaseScreen {
 					// フィールドを初期化
 					field.init();
 				} else {
-					// スコアを更新
-					score.setScore(field.getScore());
 					// 新しい組ぷよを生成
 					kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 					phase = PHASE_CONTROL;
