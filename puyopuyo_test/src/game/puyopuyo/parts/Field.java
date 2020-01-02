@@ -9,6 +9,7 @@ import java.util.List;
 
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
+import game.puyopuyo.animation.GameOverAnimation;
 import game.puyopuyo.animation.VanishAnimation;
 import game.puyopuyo.common.ImageManager;
 
@@ -428,9 +429,26 @@ public class Field {
 	 *
 	 * @return true:ゲームオーバー
 	 */
-	public boolean isGameOver() {
+	public boolean checkGameOver(List<BaseAnimation> list) {
 		if(field[gameOver.y][gameOver.x] != COLOR_NONE) {
+			// ゲームオーバーアニメーションをリストに追加
+			list.add(new GameOverAnimation());
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * ゲームオーバー処理中判定
+	 *
+	 * @param list
+	 * @return true:処理中、false:処理完了
+	 */
+	public boolean isGameOver(List<BaseAnimation> list) {
+		for(BaseAnimation a : list) {
+			if(a instanceof GameOverAnimation) {
+				return true;
+			}
 		}
 		return false;
 	}

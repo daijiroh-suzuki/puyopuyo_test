@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import game.puyopuyo.MainPanel;
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
@@ -24,6 +22,8 @@ public class GameScreen extends BaseScreen {
 	private static final int PHASE_DROP = 2;
 	/** 処理フェーズ：消滅処理中 */
 	private static final int PHASE_VANISH = 3;
+	/** 処理フェーズ：ゲームオーバー */
+	private static final int PHASE_GAMEOVER = 4;
 
 	/** コントローラー */
 	private Controller controller;
@@ -113,11 +113,8 @@ public class GameScreen extends BaseScreen {
 					// スコアを更新
 					score.setScore(field.getScore());
 					phase = PHASE_VANISH;
-				} else if(field.isGameOver()) {
-					// ポップアップを表示
-					JOptionPane.showMessageDialog(null, "ゲームオーバー");
-					// フィールドを初期化
-					field.init();
+				} else if(field.checkGameOver(animation)) {
+					phase = PHASE_GAMEOVER;
 				} else {
 					// 新しい組ぷよを生成
 					kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
@@ -129,6 +126,14 @@ public class GameScreen extends BaseScreen {
 				// 落下処理
 				field.drop(animation);
 				phase = PHASE_DROP;
+			}
+		} else if(phase == PHASE_GAMEOVER) { //--------------------------------
+			if(!field.isGameOver(animation)) {
+				// フィールドを初期化
+				field.init();
+				// 新しい組ぷよを生成
+				kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+				phase = PHASE_CONTROL;
 			}
 		}
 
