@@ -131,8 +131,12 @@ public class GameScreen extends BaseScreen {
 			if(!field.isGameOver(animation)) {
 				// フィールドを初期化
 				field.init();
-				// 新しい組ぷよを生成
+				// Nextぷよを生成
+				nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
+				// 組ぷよを生成
 				kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+				// スコアを生成
+				score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 				phase = PHASE_CONTROL;
 			}
 		}
