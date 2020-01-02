@@ -42,6 +42,8 @@ public class GameScreen extends BaseScreen {
 
 	/** フレームカウント */
 	private int frameCount;
+	/** 組ぷよが自動落下するフレーム数 */
+	private int autoDropCount = 10;
 
 	/**
 	 * コンストラクタ
@@ -72,15 +74,17 @@ public class GameScreen extends BaseScreen {
 	public void update() {
 
 		if(phase == PHASE_CONTROL) { //----------------------------------------
+			// フレームカウントを加算
 			frameCount++;
 			// キー操作
 			if(controller.isKeyUp()) {
 				// 上方向キー押下時
 				kumiPuyo.move(KumiPuyo.DIR_UP);
 				controller.setKeyUp(false);
-			} else if(controller.isKeyDown() || frameCount >= 10) {
-				frameCount = 0;
+			} else if(controller.isKeyDown() || frameCount >= autoDropCount) {
 				// 下方向キー押下時
+				// フレームカウントを初期化
+				frameCount = 0;
 				boolean isFixed = kumiPuyo.move(KumiPuyo.DIR_DOWN);
 				if(isFixed) {
 					// 落下処理
