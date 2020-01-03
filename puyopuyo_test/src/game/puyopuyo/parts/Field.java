@@ -153,9 +153,6 @@ public class Field {
 		// フィールド配列を描画
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
-//				// TODO (仮処理)枠を描画
-//				g.setColor(Color.WHITE);
-//				g.drawRect(j*TILE_SIZE, i*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 				// 空白マスと壁マスは描画しない
 				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
@@ -261,14 +258,13 @@ public class Field {
 	/**
 	 * 落下処理中判定
 	 *
+	 * @param list
 	 * @return true:処理中、false:処理完了
 	 */
-	public boolean isDrop() {
-		for(int i=0; i<field.length; i++) {
-			for(int j=0; j<field[i].length; j++) {
-				if(field[i][j] / TILE_HIDDEN > 0) {
-					return true;
-				}
+	public boolean isDrop(List<BaseAnimation> list) {
+		for(BaseAnimation a : list) {
+			if(a instanceof DropAnimation) {
+				return true;
 			}
 		}
 		return false;
