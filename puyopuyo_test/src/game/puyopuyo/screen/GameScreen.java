@@ -103,8 +103,13 @@ public class GameScreen extends BaseScreen {
 				kumiPuyo.move(KumiPuyo.DIR_LEFT);
 				controller.setKeyLeft(false);
 			} else if(controller.isKeyA()) {
-				kumiPuyo.turn();
+				// Aキー押下時
+				kumiPuyo.turn(true);
 				controller.setKeyA(false);
+			} else if(controller.isKeyB()) {
+				// Bキー押下時
+				kumiPuyo.turn(false);
+				controller.setKeyB(false);
 			}
 		} else if(phase == PHASE_DROP) { //------------------------------------
 			if(!field.isDrop()) {

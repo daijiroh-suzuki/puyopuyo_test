@@ -89,12 +89,16 @@ public class KumiPuyo {
 	/**
 	 * 回転処理
 	 */
-	public void turn() {
+	public void turn(boolean dir) {
 		int[][] turnedForm = new int[ROW][COL];
 
 		for(int i=0; i<ROW; i++) {
 			for(int j=0; j<COL; j++) {
-				turnedForm[j][ROW - 1 - i] = form[i][j];
+				if(dir) {
+					turnedForm[j][ROW - 1 - i] = form[i][j];
+				} else {
+					turnedForm[COL - 1 -j][i] = form[i][j];
+				}
 			}
 		}
 
