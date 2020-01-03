@@ -9,6 +9,7 @@ import game.puyopuyo.MainPanel;
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.controller.Controller;
+import game.puyopuyo.parts.DifficultySelect;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.NextPuyo;
@@ -26,6 +27,8 @@ public class GameScreen extends BaseScreen {
 	private KumiPuyo kumiPuyo;
 	/** スコア */
 	private Score score;
+	/** 難易度選択 */
+	private DifficultySelect difficultySelect;
 	/** アニメーション */
 	private List<BaseAnimation> animation;
 	/** 処理フェーズ */
@@ -38,6 +41,8 @@ public class GameScreen extends BaseScreen {
 
 	/** 処理フェーズ列挙 */
 	private enum Phase {
+		/** 難易度選択中 */
+		SELECT,
 		/** 操作中 */
 		CONTROL,
 		/** 落下処理中 */
@@ -58,16 +63,12 @@ public class GameScreen extends BaseScreen {
 		this.controller = controller;
 		// フィールドを生成
 		field = new Field();
-		// Nextぷよを生成
-		nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
-		// 組ぷよを生成
-		kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 		// スコアを生成
 		score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
-		phase = Phase.CONTROL;
+		phase = Phase.SELECT;
 	}
 
 	/**
@@ -77,6 +78,10 @@ public class GameScreen extends BaseScreen {
 	public void update() {
 
 		switch(phase) {
+		case SELECT:
+			// 難易度選択中フェーズ
+			selectPhase();
+			break;
 		case CONTROL:
 			// 操作中フェーズ
 			controlPhase();
@@ -122,17 +127,60 @@ public class GameScreen extends BaseScreen {
 
 		// フィールドを描画
 		field.draw(g);
+		// スコアを描画
+		score.draw(g);
+
 		// Nextぷよを描画
-		nextPuyo.draw(g);
+		if(nextPuyo != null) {
+			nextPuyo.draw(g);
+		}
 		// 組ぷよを描画
 		if(kumiPuyo != null) {
 			kumiPuyo.draw(g);
 		}
-		// スコアを描画
-		score.draw(g);
+		// 難易度選択を描画
+		if(difficultySelect != null) {
+			difficultySelect.draw(g);
+		}
 		// アニメーション描画
 		for(BaseAnimation a : animation) {
 			a.draw(g);
+		}
+	}
+
+	/**
+	 * 難易度選択中フェーズ
+	 */
+	private void selectPhase() {
+
+		if(difficultySelect == null) {
+			// 難易度選択を生成
+			difficultySelect = new DifficultySelect(2*Field.TILE_SIZE,
+					4*Field.TILE_SIZE,
+					4*Field.TILE_SIZE,
+					6*Field.TILE_SIZE);
+		}
+
+		// 上方向キー押下時
+		if(controller.isKeyUp()) {
+			difficultySelect.keyUp();
+		}
+		// 下方向キー押下時
+		if(controller.isKeyDown()) {
+			difficultySelect.keyDown();
+		}
+		// Startキー押下時
+		if(controller.isKeyStart()) {
+			// 選択された難易度を取得
+			int difficulty = difficultySelect.getDifficulty();
+			// NEXTぷよの生成
+			nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE, difficulty);
+			// 組ぷよを生成
+			kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+			// 難易度選択を削除
+			difficultySelect = null;
+			// 処理フェーズを初期化
+			phase = Phase.CONTROL;
 		}
 	}
 
@@ -163,6 +211,7 @@ public class GameScreen extends BaseScreen {
 				kumiPuyo = null;
 				// 処理フェーズを落下処理中に変更
 				phase = Phase.DROP;
+				return;
 			}
 			controller.setKeyDown(false);
 		}
@@ -240,14 +289,10 @@ public class GameScreen extends BaseScreen {
 		if(!field.isGameOver(animation)) {
 			// フィールドを初期化
 			field.init();
-			// Nextぷよを生成
-			nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE);
-			// 組ぷよを生成
-			kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 			// スコアを生成
 			score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 			// 処理フェーズを操作中に変更
-			phase = Phase.CONTROL;
+			phase = Phase.SELECT;
 		}
 	}
 }

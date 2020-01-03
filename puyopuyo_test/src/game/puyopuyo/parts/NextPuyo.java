@@ -35,12 +35,12 @@ public class NextPuyo {
 	 * @param x
 	 * @param y
 	 */
-	public NextPuyo(int x, int y) {
+	public NextPuyo(int x, int y, int difficulty) {
 		this.x = x;
 		this.y = y;
 
 		// 難易度を設定
-		difficulty = 5;
+		this.difficulty = difficulty;
 		// NEXTぷよリストのサイズを設定
 		size = 2;
 		// NEXTぷよリストを生成
