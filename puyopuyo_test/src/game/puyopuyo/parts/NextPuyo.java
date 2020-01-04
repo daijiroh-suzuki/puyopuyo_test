@@ -32,8 +32,9 @@ public class NextPuyo {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param x
-	 * @param y
+	 * @param x 表示位置x座標(ピクセル単位)
+	 * @param y 表示位置y座標(ピクセル単位)
+	 * @param difficulty 難易度
 	 */
 	public NextPuyo(int x, int y, int difficulty) {
 		this.x = x;

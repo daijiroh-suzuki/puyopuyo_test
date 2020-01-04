@@ -164,10 +164,12 @@ public class GameScreen extends BaseScreen {
 		// 上方向キー押下時
 		if(controller.isKeyUp()) {
 			difficultySelect.keyUp();
+			controller.setKeyUp(false);
 		}
 		// 下方向キー押下時
 		if(controller.isKeyDown()) {
 			difficultySelect.keyDown();
+			controller.setKeyDown(false);
 		}
 		// Startキー押下時
 		if(controller.isKeyStart()) {
