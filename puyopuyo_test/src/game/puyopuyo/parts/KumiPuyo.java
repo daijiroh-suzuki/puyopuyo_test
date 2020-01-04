@@ -7,6 +7,9 @@ import game.puyopuyo.common.ImageManager;
 
 public class KumiPuyo {
 
+	/*
+	 * プレイヤーが操作するぷよぷよのことを「組ぷよ」とする
+	 */
 	// 組ぷよのサイズ
 	private static final int COL = 3;
 	private static final int ROW = 3;
@@ -103,7 +106,25 @@ public class KumiPuyo {
 		}
 
 		if(field.isMovable(pos, turnedForm)) {
+			// 移動可能の場合
 			form = turnedForm;
+		} else {
+			// 移動不可の場合
+			Point newPos = new Point(pos.x, pos.y);
+			if(turnedForm[axis.y][axis.x+1] != Field.COLOR_NONE) { // 右側が接触
+				// 組ぷよを左移動
+				newPos = new Point(pos.x - 1, pos.y);
+			} else if(turnedForm[axis.y][axis.x-1] != Field.COLOR_NONE) { // 左側が接触
+				// 組ぷよを右移動
+				newPos = new Point(pos.x + 1, pos.y);
+			} else if(turnedForm[axis.y+1][axis.x] != Field.COLOR_NONE) { // 下側が接触
+				// 組ぷよを上移動
+				newPos = new Point(pos.x, pos.y - 1);
+			}
+			if(field.isMovable(newPos, turnedForm)) {
+				pos = newPos;
+				form = turnedForm;
+			}
 		}
 	}
 
