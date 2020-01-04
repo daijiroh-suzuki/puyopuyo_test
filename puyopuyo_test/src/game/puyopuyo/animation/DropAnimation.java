@@ -9,9 +9,17 @@ import game.puyopuyo.parts.Field;
 
 public class DropAnimation extends BaseAnimation {
 
+	/** 指定フレーム数で落下処理を完了させる */
+	private static final int FRAME = 8;
+
+	/** 描画座標 */
 	private Point current;
+	/** 落下後座標 */
 	private Point to;
+	/** ぷよの色 */
 	private int color;
+	/** 落下速度 */
+	private int vy;
 
 	/**
 	 * コンストラクタ
@@ -22,9 +30,14 @@ public class DropAnimation extends BaseAnimation {
 	 */
 	public DropAnimation(Point from, Point to, int color) {
 
+		// マス目座標からピクセル座標に変換して設定
 		this.current = CommonUtil.grid2Pixel(from);
 		this.to      = CommonUtil.grid2Pixel(to);
 		this.color   = color;
+
+		// 落下速度計算
+		vy = (this.to.y - this.current.y) / FRAME;
+
 		this.running = true;
 	}
 
@@ -34,7 +47,7 @@ public class DropAnimation extends BaseAnimation {
 	@Override
 	public void update() {
 		if(current.y < to.y) {
-			current.y = current.y + 8;
+			current.y = current.y + vy;
 		} else {
 			running = false;
 		}
