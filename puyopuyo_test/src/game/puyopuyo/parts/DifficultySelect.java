@@ -12,7 +12,7 @@ public class DifficultySelect {
 	/** 難易度 */
 	private static final int[] DIFFICULTY = {3, 4, 5};
 	/** 難易度文言 */
-	private static final String[] MESSAGE = {"甘口", "中辛", "激辛"};
+	private static final String[] MESSAGE = {"激甘", "中辛", "激辛"};
 
 	/** 描画座標x */
 	private int x;
