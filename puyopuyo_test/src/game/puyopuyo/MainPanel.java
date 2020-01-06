@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.screen.BaseScreen;
-import game.puyopuyo.screen.GameScreen;
+import game.puyopuyo.screen.TokotonScreen;
 
 public class MainPanel extends JPanel implements Runnable {
 
@@ -73,7 +73,7 @@ public class MainPanel extends JPanel implements Runnable {
 		// 画像ファイルをロード
 		ImageManager.init();
 		// ゲーム画面を生成
-		screen = new GameScreen(controller);
+		screen = new TokotonScreen(controller);
 		System.out.println(PERIOD);
 
 		long beforeTime, afterTime, timeDiff, sleepTime;

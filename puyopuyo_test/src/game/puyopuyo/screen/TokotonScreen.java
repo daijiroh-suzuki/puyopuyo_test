@@ -18,7 +18,7 @@ import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Score;
 
-public class GameScreen extends BaseScreen {
+public class TokotonScreen extends BaseScreen {
 
 	/** コントローラー */
 	private Controller controller;
@@ -70,7 +70,7 @@ public class GameScreen extends BaseScreen {
 	 *
 	 * @param controller
 	 */
-	public GameScreen(Controller controller) {
+	public TokotonScreen(Controller controller) {
 		// コントローラーを設定
 		this.controller = controller;
 		// フィールドを生成
