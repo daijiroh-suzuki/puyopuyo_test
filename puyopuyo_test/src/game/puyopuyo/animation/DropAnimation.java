@@ -10,7 +10,7 @@ import game.puyopuyo.parts.Field;
 public class DropAnimation extends BaseAnimation {
 
 	/** 指定フレーム数で落下処理を完了させる */
-	private static final int FRAME = 8;
+	private static final int FRAME = 24;
 
 	/** 描画座標 */
 	private Point current;

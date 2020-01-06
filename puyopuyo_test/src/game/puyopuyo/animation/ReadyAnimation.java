@@ -23,7 +23,7 @@ public class ReadyAnimation extends BaseAnimation {
 	@Override
 	public void update() {
 		frameCount++;
-		if(frameCount >= 30) {
+		if(frameCount >= 60) {
 			running = false;
 		}
 	}
@@ -45,8 +45,8 @@ public class ReadyAnimation extends BaseAnimation {
 		g.fillRect(0, 240-fm.getHeight(), 256, fm.getHeight()+10);
 		// 文字列を描画
 		g.setColor(Color.WHITE);
-		if(frameCount <= 25) {
-			/// 適当に25フレームまではREADYを表示
+		if(frameCount <= 45) {
+			/// 適当に50フレームまではREADYを表示
 			g.drawString("READY", 80, 240);
 		} else {
 			// 残りフレームはGOを表示

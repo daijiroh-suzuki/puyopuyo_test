@@ -40,7 +40,7 @@ public class GameScreen extends BaseScreen {
 	/** フレームカウント */
 	private int frameCount;
 	/** 組ぷよが自動落下するフレーム数 */
-	private int autoDropCount = 10;
+	private int autoDropCount = 30;
 
 	/** 一時停止フラグ */
 	private boolean pause;

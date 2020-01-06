@@ -30,7 +30,7 @@ public class VanishAnimation extends BaseAnimation {
 	@Override
 	public void update() {
 		frameCount++;
-		if(frameCount >= 10) { // 適当に10フレーム経過したら終了
+		if(frameCount >= 30) { // 適当に30フレーム経過したら終了
 			running = false;
 		}
 	}
