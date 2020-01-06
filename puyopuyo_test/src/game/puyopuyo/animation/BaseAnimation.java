@@ -25,4 +25,11 @@ public abstract class BaseAnimation {
 	public boolean isRunning() {
 		return running;
 	}
+
+	/**
+	 * @param running
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
 }

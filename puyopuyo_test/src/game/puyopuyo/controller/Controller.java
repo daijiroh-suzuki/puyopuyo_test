@@ -7,6 +7,8 @@ public class Controller implements KeyListener {
 
 	/** Startボタンキーフラグ */
 	private boolean keyStart = false;
+	/** Selectボタンキーフラグ */
+	private boolean keySelect = false;
 	/** Aボタンキーフラグ */
 	private boolean keyA     = false;
 	/** Bボタンキーフラグ */
@@ -29,6 +31,10 @@ public class Controller implements KeyListener {
 		case KeyEvent.VK_ENTER:
 //			System.out.println("Startボタンを押下");
 			keyStart = true;
+			break;
+		case KeyEvent.VK_SPACE:
+//			System.out.println("Selectボタンを押下");
+			keySelect = true;
 			break;
 		case KeyEvent.VK_A:
 //			System.out.println("Aボタンを押下");
@@ -66,6 +72,10 @@ public class Controller implements KeyListener {
 		case KeyEvent.VK_ENTER:
 //			System.out.println("Startボタンが離された");
 			keyStart = false;
+			break;
+		case KeyEvent.VK_SPACE:
+//			System.out.println("Selectボタンが離された");
+			keySelect = false;
 			break;
 		case KeyEvent.VK_A:
 //			System.out.println("Aボタンが離された");
@@ -112,6 +122,20 @@ public class Controller implements KeyListener {
 	public void setKeyStart(boolean keyStart) {
 		this.keyStart = keyStart;
 	}
+	/**
+	 * @return keySelect
+	 */
+	public boolean isKeySelect() {
+		return keySelect;
+	}
+
+	/**
+	 * @param keySelect セットする keySelect
+	 */
+	public void setKeySelect(boolean keySelect) {
+		this.keySelect = keySelect;
+	}
+
 	/**
 	 * @return keyA
 	 */

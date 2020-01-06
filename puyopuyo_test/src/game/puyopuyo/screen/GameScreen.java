@@ -8,6 +8,7 @@ import java.util.List;
 import game.puyopuyo.MainPanel;
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
+import game.puyopuyo.animation.PauseAnimation;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.DifficultySelect;
 import game.puyopuyo.parts.Field;
@@ -39,6 +40,11 @@ public class GameScreen extends BaseScreen {
 	/** 組ぷよが自動落下するフレーム数 */
 	private int autoDropCount = 10;
 
+	/** 一時停止フラグ */
+	private boolean pause;
+	/** 一時停止アニメーション */
+	private PauseAnimation pa;
+
 	/** 処理フェーズ列挙 */
 	private enum Phase {
 		/** 難易度選択中 */
@@ -69,6 +75,8 @@ public class GameScreen extends BaseScreen {
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
 		phase = Phase.SELECT;
+		// 一時停止フラグ
+		pause = false;
 	}
 
 	/**
@@ -76,6 +84,25 @@ public class GameScreen extends BaseScreen {
 	 */
 	@Override
 	public void update() {
+
+		// SELECTキー押下時
+		if(controller.isKeySelect()) {
+			if(!pause) {
+				// 一時停止フラグON
+				pause = true;
+				// 一時停止アニメーションをリストに追加
+				pa = new PauseAnimation();
+				animation.add(pa);
+			} else {
+				// 一時停止フラグOFF
+				pause = false;
+				// 一時停止アニメーション削除
+				pa.setRunning(false);
+			}
+			controller.setKeySelect(false);
+		}
+		// 一時停止中の場合は処理を中断
+		if(pause) return;
 
 		switch(phase) {
 		case SELECT:
