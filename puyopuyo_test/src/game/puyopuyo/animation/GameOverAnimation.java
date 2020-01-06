@@ -7,8 +7,6 @@ import java.awt.Graphics;
 
 public class GameOverAnimation extends BaseAnimation {
 
-	/** フレームカウント */
-	private int frameCount;
 	/** 描画色 */
 	private Color clr;
 
@@ -16,7 +14,6 @@ public class GameOverAnimation extends BaseAnimation {
 	 * コンストラクタ
 	 */
 	public GameOverAnimation() {
-		frameCount = 0;
 		clr = new Color(0, 0, 0, 60);
 	}
 
@@ -24,12 +21,7 @@ public class GameOverAnimation extends BaseAnimation {
 	 * 更新処理
 	 */
 	@Override
-	public void update() {
-		frameCount++;
-		if(frameCount >= 100) {
-			running = false;
-		}
-	}
+	public void update() {}
 
 	/**
 	 * 描画処理

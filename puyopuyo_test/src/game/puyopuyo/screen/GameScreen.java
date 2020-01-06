@@ -8,6 +8,7 @@ import java.util.List;
 import game.puyopuyo.MainPanel;
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
+import game.puyopuyo.animation.GameOverAnimation;
 import game.puyopuyo.animation.PauseAnimation;
 import game.puyopuyo.animation.ReadyAnimation;
 import game.puyopuyo.controller.Controller;
@@ -45,6 +46,8 @@ public class GameScreen extends BaseScreen {
 	private boolean pause;
 	/** 一時停止アニメーション */
 	private PauseAnimation pa;
+	/** ゲームオーバーアニメーション */
+	private GameOverAnimation ga;
 
 	/** 処理フェーズ列挙 */
 	private enum Phase {
@@ -303,15 +306,18 @@ public class GameScreen extends BaseScreen {
 				score.setScore(field.getScore());
 				// 処理フェーズを消滅処理中に変更
 				phase = Phase.VANISH;
-			} else if(field.checkGameOver(animation)) {
+			} else if(field.checkGameOver()) {
 				// 消滅対象なし & ゲームオーバーマスにぷよが存在する場合
-				// 処理フェースをゲームオーバーに変更
+				// ゲームオーバーアニメーションをリストに追加
+				ga = new GameOverAnimation();
+				animation.add(ga);
+				// 処理フェーズをゲームオーバーに変更
 				phase = Phase.GAMEOVER;
 			} else {
 				// 消滅対象なしの場合
 				// 新しい組ぷよを生成
 				kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
-				// 処理フェースを操作中に変更
+				// 処理フェーズを操作中に変更
 				phase = Phase.CONTROL;
 			}
 		}
@@ -334,14 +340,17 @@ public class GameScreen extends BaseScreen {
 	 * ゲームオーバーフェーズ
 	 */
 	private void gameOverPhase() {
-		// ゲームオーバーアニメーションが完了したか？
-		if(!field.isGameOver(animation)) {
+		// Startキー押下時
+		if(controller.isKeyStart()) {
+			// ゲームオーバーアニメーションを削除
+			ga.setRunning(false);
 			// フィールドを初期化
 			field.init();
 			// スコアを生成
 			score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
 			// 処理フェーズを操作中に変更
 			phase = Phase.SELECT;
+			controller.setKeyStart(false);
 		}
 	}
 
