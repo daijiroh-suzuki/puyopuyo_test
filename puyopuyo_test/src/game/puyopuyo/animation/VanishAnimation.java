@@ -21,8 +21,7 @@ public class VanishAnimation extends BaseAnimation {
 	public VanishAnimation(Point pos, int color) {
 		this.pos = pos;
 		this.color = color;
-		this.frameCount = 0;
-		this.running = true;
+		frameCount = 0;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 public abstract class BaseAnimation {
 
 	/** 実行中フラグ */
-	protected boolean running;
+	protected boolean running = true;
 
 	/**
 	 * 更新処理

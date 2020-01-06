@@ -5,19 +5,16 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-public class GameOverAnimation extends BaseAnimation {
+public class ReadyAnimation extends BaseAnimation {
 
 	/** フレームカウント */
 	private int frameCount;
-	/** 描画色 */
-	private Color clr;
 
 	/**
 	 * コンストラクタ
 	 */
-	public GameOverAnimation() {
+	public ReadyAnimation() {
 		frameCount = 0;
-		clr = new Color(0, 0, 0, 60);
 	}
 
 	/**
@@ -26,7 +23,7 @@ public class GameOverAnimation extends BaseAnimation {
 	@Override
 	public void update() {
 		frameCount++;
-		if(frameCount >= 100) {
+		if(frameCount >= 30) {
 			running = false;
 		}
 	}
@@ -36,8 +33,6 @@ public class GameOverAnimation extends BaseAnimation {
 	 */
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(clr);
-		g.fillRect(0, 0, 256, 480);
 
 		// 変更前のフォントを取得
 		Font tmp = g.getFont();
@@ -48,9 +43,15 @@ public class GameOverAnimation extends BaseAnimation {
 		// アニメーション背景を描画
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 240-fm.getHeight(), 256, fm.getHeight()+10);
-		// ゲームオーバー文字列を描画
-		g.setColor(Color.RED);
-		g.drawString("GAME OVER", 60, 240);
+		// 文字列を描画
+		g.setColor(Color.WHITE);
+		if(frameCount <= 25) {
+			/// 適当に25フレームまではREADYを表示
+			g.drawString("READY", 80, 240);
+		} else {
+			// 残りフレームはGOを表示
+			g.drawString("GO", 110, 240);
+		}
 		// フォントを変更前に戻す
 		g.setFont(tmp);
 	}

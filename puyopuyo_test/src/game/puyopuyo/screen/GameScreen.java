@@ -9,6 +9,7 @@ import game.puyopuyo.MainPanel;
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.animation.PauseAnimation;
+import game.puyopuyo.animation.ReadyAnimation;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.DifficultySelect;
 import game.puyopuyo.parts.Field;
@@ -49,6 +50,8 @@ public class GameScreen extends BaseScreen {
 	private enum Phase {
 		/** 難易度選択中 */
 		SELECT,
+		/** 準備中 */
+		READY,
 		/** 操作中 */
 		CONTROL,
 		/** 落下処理中 */
@@ -108,6 +111,10 @@ public class GameScreen extends BaseScreen {
 		case SELECT:
 			// 難易度選択中フェーズ
 			selectPhase();
+			break;
+		case READY:
+			// 準備中フェーズ
+			readyPhase();
 			break;
 		case CONTROL:
 			// 操作中フェーズ
@@ -204,11 +211,24 @@ public class GameScreen extends BaseScreen {
 			int difficulty = difficultySelect.getDifficulty();
 			// NEXTぷよの生成
 			nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE, difficulty);
-			// 組ぷよを生成
-			kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
 			// 難易度選択を削除
 			difficultySelect = null;
-			// 処理フェーズを初期化
+			// 準備アニメーションを追加
+			animation.add(new ReadyAnimation());
+			// 処理フェーズを準備中に変更
+			phase = Phase.READY;
+		}
+	}
+
+	/**
+	 * 準備中フェーズ
+	 */
+	private void readyPhase() {
+		// 準備中処理が完了したか？
+		if(!isReady(animation)) {
+			// 組ぷよを生成
+			kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+			// 処理フェーズを操作中に変更
 			phase = Phase.CONTROL;
 		}
 	}
@@ -323,5 +343,20 @@ public class GameScreen extends BaseScreen {
 			// 処理フェーズを操作中に変更
 			phase = Phase.SELECT;
 		}
+	}
+
+	/**
+	 * 準備中判定
+	 *
+	 * @param list
+	 * @return true:処理中、false:処理完了
+	 */
+	private boolean isReady(List<BaseAnimation> list) {
+		for(BaseAnimation a : list) {
+			if(a instanceof ReadyAnimation) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

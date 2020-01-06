@@ -37,8 +37,6 @@ public class DropAnimation extends BaseAnimation {
 
 		// 落下速度計算
 		vy = (this.to.y - this.current.y) / FRAME;
-
-		this.running = true;
 	}
 
 	/**
