@@ -39,15 +39,17 @@ public class GameOverAnimation extends BaseAnimation {
 
 		// 変更前のフォントを取得
 		Font tmp = g.getFont();
-		g.setFont(new Font("Arial", Font.BOLD, 24));
+		// 描画フォントを設定
+		g.setFont(new Font("Meiryo UI", Font.BOLD, 24));
+		// フォント情報を取得
 		FontMetrics fm = g.getFontMetrics();
-
+		// アニメーション背景を描画
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 240-fm.getHeight(), 256, fm.getHeight()+10);
-
+		// ゲームオーバー文字列を描画
 		g.setColor(Color.RED);
-		g.drawString("Game Over", 60, 240);
-		// フォントを元に戻す
+		g.drawString("GAME OVER", 60, 240);
+		// フォントを変更前に戻す
 		g.setFont(tmp);
 	}
 }

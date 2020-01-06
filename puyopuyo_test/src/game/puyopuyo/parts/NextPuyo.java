@@ -1,10 +1,12 @@
 package game.puyopuyo.parts;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.puyopuyo.common.CommonUtil;
 import game.puyopuyo.common.ImageManager;
 
 public class NextPuyo {
@@ -81,7 +83,7 @@ public class NextPuyo {
 	public void draw(Graphics g) {
 		// TODO
 		g.setColor(Color.WHITE);
-		g.drawString("NEXT", x, y);
+		CommonUtil.drawString("NEXT", x, y, new Font("Meiryo UI", Font.BOLD, 14), g);
 
 		int cnt = 0;
 		for(int[][] next : nextList) {

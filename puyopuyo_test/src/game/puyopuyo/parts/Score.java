@@ -1,7 +1,10 @@
 package game.puyopuyo.parts;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
+import game.puyopuyo.common.CommonUtil;
 
 public class Score {
 
@@ -32,7 +35,11 @@ public class Score {
 	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.drawString("SCORE : " + score, x, y);
+		CommonUtil.drawString("SCORE : " + score,
+				x,
+				y,
+				new Font("Meiryo UI", Font.BOLD, 14),
+				g);
 	}
 
 	/**

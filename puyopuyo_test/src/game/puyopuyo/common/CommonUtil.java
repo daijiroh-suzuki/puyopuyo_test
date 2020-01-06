@@ -1,5 +1,7 @@
 package game.puyopuyo.common;
 
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Point;
 
 import game.puyopuyo.parts.Field;
@@ -44,5 +46,25 @@ public class CommonUtil {
 	 */
 	public static int pixel2Grid(int pixel) {
 		return pixel / Field.TILE_SIZE;
+	}
+
+	/**
+	 * 指定したフォントで文字列を描画する
+	 *
+	 * @param str 描画する文字列
+	 * @param x x座標
+	 * @param y y座標
+	 * @param font 描画フォント
+	 * @param g
+	 */
+	public static void drawString(String str, int x, int y, Font font, Graphics g) {
+		// 変更前のフォントを取得
+		Font tmp = g.getFont();
+		// 描画フォントを設定
+		g.setFont(font);
+		// 文字列を描画
+		g.drawString(str, x, y);
+		// フォントを変更前に戻す
+		g.setFont(tmp);
 	}
 }
