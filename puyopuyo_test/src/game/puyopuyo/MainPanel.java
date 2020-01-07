@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.screen.BaseScreen;
-import game.puyopuyo.screen.GameScreen;
+import game.puyopuyo.screen.ModeScreen;
 
 public class MainPanel extends JPanel implements Runnable {
 
@@ -73,8 +73,7 @@ public class MainPanel extends JPanel implements Runnable {
 		// 画像ファイルをロード
 		ImageManager.init();
 		// ゲーム画面を生成
-		screen = new GameScreen(controller);
-		System.out.println(PERIOD);
+		screen = new ModeScreen(controller);
 
 		long beforeTime, afterTime, timeDiff, sleepTime;
 		long overSleepTime = 0L;
@@ -133,6 +132,12 @@ public class MainPanel extends JPanel implements Runnable {
 	private void gameUpdate() {
 		// ゲーム画面を更新する
 		screen.update();
+
+		// 画面遷移
+		BaseScreen next = screen.getNext();
+		if(next != null) {
+			screen = next;
+		}
 	}
 
 	/**

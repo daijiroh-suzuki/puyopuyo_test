@@ -4,6 +4,9 @@ import java.awt.Graphics;
 
 public abstract class BaseScreen {
 
+	/** 次画面 */
+	protected BaseScreen next;
+
 	/**
 	 * 画面の状態を更新する
 	 */
@@ -15,4 +18,13 @@ public abstract class BaseScreen {
 	 * @param g
 	 */
 	public abstract void draw(Graphics g);
+
+	/**
+	 * 次画面を取得する
+	 *
+	 * @return
+	 */
+	public BaseScreen getNext() {
+		return next;
+	}
 }

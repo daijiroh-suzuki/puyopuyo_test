@@ -13,6 +13,8 @@ public class ImageManager {
 	public static Image puyoImage;
 	/** ぷよ画像2Image */
 	public static Image puyoImage2;
+	/** モード選択画像Image */
+	public static Image modeImage;
 
 	/**
 	 * 初期化処理
@@ -39,5 +41,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/puyo2.gif");
 		icon = new ImageIcon(url);
 		puyoImage2 = icon.getImage();
+
+		// モード選択画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/mode.png");
+		icon = new ImageIcon(url);
+		modeImage = icon.getImage();
 	}
 }
