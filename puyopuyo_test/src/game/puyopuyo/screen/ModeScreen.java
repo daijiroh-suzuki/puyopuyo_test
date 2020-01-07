@@ -11,13 +11,23 @@ import game.puyopuyo.controller.Controller;
 
 public class ModeScreen extends BaseScreen {
 
-	private static final int MODE_W = 111;
-	private static final int MODE_H = 88;
+	/** 選択可能なゲームモード数 */
+	private static final int MODE_NUM = 4;
+//	/** ゲームモード：ひとりでぷよぷよ */
+//	private static final int MODE_HITORIDE = 0;
+//	/** ゲームモード：ふたりでぷよぷよ */
+//	private static final int MODE_FUTARIDE = 1;
+	/** ゲームモード：とことんぷよぷよ */
+	private static final int MODE_TOKOTON  = 2;
+//	/** ゲームモード：おぷしょん */
+//	private static final int MODE_OPTION   = 3;
 
 	/** コントローラー */
 	private Controller  controller;
-	/** 選択中のゲームモード */
+	/** 選択ゲームモード */
 	private int select;
+	/** フレームカウント */
+	private int frameCount;
 
 	/**
 	 * コンストラクタ
@@ -27,6 +37,10 @@ public class ModeScreen extends BaseScreen {
 	public ModeScreen(Controller controller) {
 		// コントローラーを設定
 		this.controller = controller;
+		// 選択ゲームモードを初期化
+		select = 0;
+		// フレームカウントを初期化
+		frameCount = 0;
 	}
 
 	/**
@@ -34,6 +48,33 @@ public class ModeScreen extends BaseScreen {
 	 */
 	@Override
 	public void update(){
+
+		frameCount++;
+		if(frameCount >= 130) {
+			frameCount = 0;
+		}
+
+		// 右方向キー押下時
+		if(controller.isKeyRight()) {
+			if(select + 1 < MODE_NUM) {
+				select++;
+			}
+			controller.setKeyRight(false);
+		}
+		// 左方向キー押下時
+		if(controller.isKeyLeft()) {
+			if(select - 1 >= 0) {
+				select--;
+			}
+			controller.setKeyLeft(false);
+		}
+		// Startキー押下時
+		if(controller.isKeyStart()) {
+			if(select == MODE_TOKOTON) {
+				next = new TokotonScreen(controller);
+			}
+			controller.setKeyStart(false);
+		}
 	}
 
 	/**
@@ -51,38 +92,42 @@ public class ModeScreen extends BaseScreen {
 
 		// モードを描画
 		g.drawImage(ImageManager.modeImage,
-				(MainPanel.WIDTH / 2) - (MODE_W * 3 / 2),
-				(MainPanel.HEIGHT / 2) - (MODE_H * 3 / 2),
-				(MainPanel.WIDTH / 2) - (MODE_W * 3 / 2) + MODE_W * 3,
-				(MainPanel.HEIGHT / 2) - (MODE_H * 3 / 2) + MODE_H * 3,
-				0,
+				(MainPanel.WIDTH / 2) - (112 * 3 / 2),
+				(MainPanel.HEIGHT / 2) - (88 * 3 / 2),
+				(MainPanel.WIDTH / 2) - (112 * 3 / 2) + 112 * 3,
+				(MainPanel.HEIGHT / 2) - (88 * 3 / 2) + 88 * 3,
+				select * 112,
 				100,
-				0 + 111,
+				select * 112 + 112,
 				100 + 88,
 				null);
 
-		// 左矢印を描画
-		g.drawImage(ImageManager.modeImage,
-				30,
-				160,
-				30 + 32 * 3,
-				160 + 50 * 3,
-				0,
-				0,
-				32,
-				50,
-				null);
+		if(select != 0) {
+			// 左矢印を描画
+			g.drawImage(ImageManager.modeImage,
+					30,
+					160,
+					30 + 32 * 3,
+					160 + 50 * 3,
+					(frameCount / 10) % 13 * 32,
+					0,
+					(frameCount / 10) % 13 * 32 + 32,
+					50,
+					null);
+		}
 
-		// 右矢印を描画
-		g.drawImage(ImageManager.modeImage,
-				515,
-				160,
-				515 + 32 * 3,
-				160 + 50 * 3,
-				0,
-				50,
-				32,
-				100,
-				null);
+		if(select != MODE_NUM -1) {
+			// 右矢印を描画
+			g.drawImage(ImageManager.modeImage,
+					515,
+					160,
+					515 + 32 * 3,
+					160 + 50 * 3,
+					(frameCount / 10) % 13 * 32,
+					50,
+					(frameCount / 10) % 13 * 32+ 32,
+					100,
+					null);
+		}
 	}
 }
