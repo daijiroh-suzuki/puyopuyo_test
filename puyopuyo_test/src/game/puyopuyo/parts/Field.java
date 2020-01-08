@@ -137,18 +137,6 @@ public class Field {
 		// 連結方向情報を更新
 		updateConnect();
 
-		// 背景画像を描画
-		g.drawImage(ImageManager.bgImage,
-				0,
-				TILE_SIZE, // 先頭行は非表示
-				COL * TILE_SIZE,
-				ROW * TILE_SIZE,
-				0,
-				0,
-				ImageManager.bgImage.getWidth(null),
-				ImageManager.bgImage.getHeight(null),
-				null);
-
 		// フィールド配列を描画
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {

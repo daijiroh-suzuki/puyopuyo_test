@@ -1,12 +1,9 @@
 package game.puyopuyo.parts;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.puyopuyo.common.CommonUtil;
 import game.puyopuyo.common.ImageManager;
 
 public class NextPuyo {
@@ -81,31 +78,50 @@ public class NextPuyo {
 	 * @param g
 	 */
 	public void draw(Graphics g) {
-		// TODO
-		g.setColor(Color.WHITE);
-		CommonUtil.drawString("NEXT", x, y, new Font("Meiryo UI", Font.BOLD, 14), g);
 
-		int cnt = 0;
-		for(int[][] next : nextList) {
-			for(int i=0; i<ROW; i++) {
-				for(int j=0; j<COL; j++) {
-					// 空白マスは描画しない
-					if(next[i][j] == Field.COLOR_NONE) {
-						continue;
-					}
-					g.drawImage(ImageManager.puyoImage,
-							x + j * TILE_SIZE,
-							y + i * TILE_SIZE + cnt * ROW * TILE_SIZE,
-							x + j * TILE_SIZE + TILE_SIZE,
-							y + i * TILE_SIZE + cnt * ROW * TILE_SIZE + TILE_SIZE,
-							next[i][j] * TILE_SIZE,
-							0,
-							next[i][j] * TILE_SIZE + TILE_SIZE,
-							TILE_SIZE,
-							null);
-				}
+		if(nextList.size() == 2) {
+			// とりあえずNEXTぷよ数２つ固定で表示位置を設定
+			int[][] next = nextList.get(0);
+			drawNext(x, y, next, g);
+
+			next = nextList.get(1);
+			drawNext(x + TILE_SIZE, y + TILE_SIZE, next, g);
+
+		} else {
+			int cnt = 0;
+			for(int[][] next : nextList) {
+				drawNext(x, y + cnt * ROW * TILE_SIZE, next, g);
+				cnt++;
 			}
-			cnt++;
+		}
+	}
+
+	/**
+	 * NEXTぷよを描画
+	 *
+	 * @param x
+	 * @param y
+	 * @param next
+	 * @param g
+	 */
+	private void drawNext(int x, int y, int[][] next, Graphics g) {
+		for(int i=0; i<ROW; i++) {
+			for(int j=0; j<COL; j++) {
+				// 空白マスは描画しない
+				if(next[i][j] == Field.COLOR_NONE) {
+					continue;
+				}
+				g.drawImage(ImageManager.puyoImage,
+				x + j * TILE_SIZE,
+				y + i * TILE_SIZE,
+				x + j * TILE_SIZE + TILE_SIZE,
+				y + i * TILE_SIZE + TILE_SIZE,
+				next[i][j] * TILE_SIZE,
+				0,
+				next[i][j] * TILE_SIZE + TILE_SIZE,
+				TILE_SIZE,
+				null);
+			}
 		}
 	}
 

@@ -15,6 +15,8 @@ public class ImageManager {
 	public static Image puyoImage2;
 	/** モード選択画像Image */
 	public static Image modeImage;
+	/** ステージ画像Image */
+	public static Image stageImage;
 
 	/**
 	 * 初期化処理
@@ -46,5 +48,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/mode.png");
 		icon = new ImageIcon(url);
 		modeImage = icon.getImage();
+
+		// ステージ画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/stage.png");
+		icon = new ImageIcon(url);
+		stageImage = icon.getImage();
 	}
 }

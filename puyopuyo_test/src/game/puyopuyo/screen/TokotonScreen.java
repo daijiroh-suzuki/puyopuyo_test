@@ -11,6 +11,7 @@ import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.animation.GameOverAnimation;
 import game.puyopuyo.animation.PauseAnimation;
 import game.puyopuyo.animation.ReadyAnimation;
+import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.DifficultySelect;
 import game.puyopuyo.parts.Field;
@@ -76,7 +77,7 @@ public class TokotonScreen extends BaseScreen {
 		// フィールドを生成
 		field = new Field();
 		// スコアを生成
-		score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
+		score = new Score(8*Field.TILE_SIZE, 13*Field.TILE_SIZE);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
@@ -162,6 +163,18 @@ public class TokotonScreen extends BaseScreen {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, MainPanel.WIDTH, MainPanel.HEIGHT);
 
+		// ステージ(背景)を描画
+		g.drawImage(ImageManager.stageImage,
+				0,
+				32,
+				640,
+				480,
+				0,
+				0,
+				320,
+				224,
+				null);
+
 		// フィールドを描画
 		field.draw(g);
 		// スコアを描画
@@ -179,6 +192,19 @@ public class TokotonScreen extends BaseScreen {
 		if(difficultySelect != null) {
 			difficultySelect.draw(g);
 		}
+
+		// ステージ(前景)を描画
+		g.drawImage(ImageManager.stageImage,
+				0,
+				32,
+				640,
+				480,
+				320,
+				0,
+				640,
+				224,
+				null);
+
 		// アニメーション描画
 		for(BaseAnimation a : animation) {
 			a.draw(g);
@@ -213,7 +239,7 @@ public class TokotonScreen extends BaseScreen {
 			// 選択された難易度を取得
 			int difficulty = difficultySelect.getDifficulty();
 			// NEXTぷよの生成
-			nextPuyo = new NextPuyo(8*Field.TILE_SIZE, 1*Field.TILE_SIZE, difficulty);
+			nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, difficulty);
 			// 難易度選択を削除
 			difficultySelect = null;
 			// 準備アニメーションを追加
