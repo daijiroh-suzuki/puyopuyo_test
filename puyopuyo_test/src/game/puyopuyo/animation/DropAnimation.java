@@ -9,8 +9,8 @@ import game.puyopuyo.parts.Field;
 
 public class DropAnimation extends BaseAnimation {
 
-	/** 指定フレーム数で落下処理を完了させる */
-	private static final int FRAME = 24;
+//	/** 指定フレーム数で落下処理を完了させる */
+//	private static final int FRAME = 24;
 
 	/** 描画座標 */
 	private Point current;
@@ -36,7 +36,8 @@ public class DropAnimation extends BaseAnimation {
 		this.color   = color;
 
 		// 落下速度計算
-		vy = (this.to.y - this.current.y) / FRAME;
+//		vy = (this.to.y - this.current.y) / FRAME;
+		vy = 4;
 	}
 
 	/**
