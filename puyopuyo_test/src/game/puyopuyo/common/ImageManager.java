@@ -17,6 +17,8 @@ public class ImageManager {
 	public static Image modeImage;
 	/** ステージ画像Image */
 	public static Image stageImage;
+	/** フォント画像Image */
+	public static Image fontImage;
 
 	/**
 	 * 初期化処理
@@ -53,5 +55,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/stage.png");
 		icon = new ImageIcon(url);
 		stageImage = icon.getImage();
+
+		// フォント画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/font.png");
+		icon = new ImageIcon(url);
+		fontImage = icon.getImage();
 	}
 }

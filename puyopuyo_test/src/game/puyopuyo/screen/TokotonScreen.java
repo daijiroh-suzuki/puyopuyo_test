@@ -77,7 +77,7 @@ public class TokotonScreen extends BaseScreen {
 		// フィールドを生成
 		field = new Field();
 		// スコアを生成
-		score = new Score(8*Field.TILE_SIZE, 13*Field.TILE_SIZE);
+		score = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
@@ -372,8 +372,8 @@ public class TokotonScreen extends BaseScreen {
 			ga.setRunning(false);
 			// フィールドを初期化
 			field.init();
-			// スコアを生成
-			score = new Score(11*Field.TILE_SIZE, 1*Field.TILE_SIZE);
+			// スコアを初期化
+			score.init();
 			// 処理フェーズを操作中に変更
 			phase = Phase.SELECT;
 			controller.setKeyStart(false);
