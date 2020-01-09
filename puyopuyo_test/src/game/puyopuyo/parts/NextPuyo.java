@@ -21,7 +21,7 @@ public class NextPuyo {
 	private int y;
 
 	/** 難易度（出現するぷよの色数） */
-	private int difficulty;
+	private int level;
 
 	/** NEXTぷよリスト */
 	private LinkedList<int[][]> nextList;
@@ -33,14 +33,14 @@ public class NextPuyo {
 	 *
 	 * @param x 表示位置x座標(ピクセル単位)
 	 * @param y 表示位置y座標(ピクセル単位)
-	 * @param difficulty 難易度
+	 * @param level 難易度
 	 */
-	public NextPuyo(int x, int y, int difficulty) {
+	public NextPuyo(int x, int y, int level) {
 		this.x = x;
 		this.y = y;
 
 		// 難易度を設定
-		this.difficulty = difficulty;
+		this.level = level;
 		// NEXTぷよリストのサイズを設定
 		size = 2;
 		// NEXTぷよリストを生成
@@ -65,8 +65,8 @@ public class NextPuyo {
 		}
 		// とりあえず縦2つのパターンのみ生成
 		// 後々フィーバーのパターンにも対応できるように組ぷよの形を配列で保持する
-		form[1][1] = new Random().nextInt(difficulty);
-		form[0][1] = new Random().nextInt(difficulty);
+		form[1][1] = new Random().nextInt(level);
+		form[0][1] = new Random().nextInt(level);
 
 		// NEXTぷよリストに追加
 		nextList.add(form);

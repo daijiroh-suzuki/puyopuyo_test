@@ -13,9 +13,9 @@ import game.puyopuyo.animation.PauseAnimation;
 import game.puyopuyo.animation.ReadyAnimation;
 import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
-import game.puyopuyo.parts.DifficultySelect;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
+import game.puyopuyo.parts.LevelSelect;
 import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Score;
 
@@ -32,7 +32,7 @@ public class TokotonScreen extends BaseScreen {
 	/** スコア */
 	private Score score;
 	/** 難易度選択 */
-	private DifficultySelect difficultySelect;
+	private LevelSelect levelSelect;
 	/** アニメーション */
 	private List<BaseAnimation> animation;
 	/** 処理フェーズ */
@@ -189,8 +189,8 @@ public class TokotonScreen extends BaseScreen {
 			kumiPuyo.draw(g);
 		}
 		// 難易度選択を描画
-		if(difficultySelect != null) {
-			difficultySelect.draw(g);
+		if(levelSelect != null) {
+			levelSelect.draw(g);
 		}
 
 		// ステージ(前景)を描画
@@ -216,9 +216,9 @@ public class TokotonScreen extends BaseScreen {
 	 */
 	private void selectPhase() {
 
-		if(difficultySelect == null) {
+		if(levelSelect == null) {
 			// 難易度選択を生成
-			difficultySelect = new DifficultySelect(2*Field.TILE_SIZE,
+			levelSelect = new LevelSelect(2*Field.TILE_SIZE,
 					4*Field.TILE_SIZE,
 					4*Field.TILE_SIZE,
 					6*Field.TILE_SIZE);
@@ -226,22 +226,22 @@ public class TokotonScreen extends BaseScreen {
 
 		// 上方向キー押下時
 		if(controller.isKeyUp()) {
-			difficultySelect.keyUp();
+			levelSelect.keyUp();
 			controller.setKeyUp(false);
 		}
 		// 下方向キー押下時
 		if(controller.isKeyDown()) {
-			difficultySelect.keyDown();
+			levelSelect.keyDown();
 			controller.setKeyDown(false);
 		}
 		// Startキー押下時
 		if(controller.isKeyStart()) {
 			// 選択された難易度を取得
-			int difficulty = difficultySelect.getDifficulty();
+			int level = levelSelect.getLevel();
 			// NEXTぷよの生成
-			nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, difficulty);
+			nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, level);
 			// 難易度選択を削除
-			difficultySelect = null;
+			levelSelect = null;
 			// 準備アニメーションを追加
 			animation.add(new ReadyAnimation());
 			// 処理フェーズを準備中に変更

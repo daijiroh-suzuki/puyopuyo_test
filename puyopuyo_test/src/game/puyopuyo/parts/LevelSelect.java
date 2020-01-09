@@ -7,10 +7,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-public class DifficultySelect {
+public class LevelSelect {
 
 	/** 難易度 */
-	private static final int[] DIFFICULTY = {3, 4, 5};
+	private static final int[] LEVEL = {3, 4, 5};
 	/** 難易度文言 */
 	private static final String[] MESSAGE = {"激甘", "中辛", "激辛"};
 
@@ -33,7 +33,7 @@ public class DifficultySelect {
 	 * @param width
 	 * @param height
 	 */
-	public DifficultySelect(int x, int y, int width, int height) {
+	public LevelSelect(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -47,7 +47,7 @@ public class DifficultySelect {
 	 */
 	public void keyUp() {
 		selectIdx =
-				(selectIdx - 1) >= 0 ? selectIdx - 1 : DIFFICULTY.length - 1;
+				(selectIdx - 1) >= 0 ? selectIdx - 1 : LEVEL.length - 1;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class DifficultySelect {
 	 */
 	public void keyDown() {
 		selectIdx =
-				(selectIdx + 1) <= DIFFICULTY.length - 1 ? selectIdx + 1 : 0;
+				(selectIdx + 1) <= LEVEL.length - 1 ? selectIdx + 1 : 0;
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class DifficultySelect {
 	 *
 	 * @return
 	 */
-	public int getDifficulty() {
-		return DIFFICULTY[selectIdx];
+	public int getLevel() {
+		return LEVEL[selectIdx];
 	}
 
 	/**
