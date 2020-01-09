@@ -1,6 +1,5 @@
 package game.puyopuyo.parts;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import game.puyopuyo.animation.BaseAnimation;
+import game.puyopuyo.animation.ChainAnimation;
 import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.animation.VanishAnimation;
 import game.puyopuyo.common.ImageManager;
@@ -146,7 +146,7 @@ public class Field {
 					continue;
 				}
 
-				// 一時非表示マスが描画しない
+				// 一時非表示マスは描画しない
 				if(field[i][j] / TILE_HIDDEN > 0) {
 					continue;
 				}
@@ -163,9 +163,6 @@ public class Field {
 						connect[i][j] * TILE_SIZE + TILE_SIZE,
 						null);
 			}
-			// 13段目は非表示
-			g.setColor(new Color(0, 0, 0, 20));
-			g.fillRect(0, 0, COL * TILE_SIZE, 2 * TILE_SIZE);
 		}
 	}
 
@@ -309,6 +306,10 @@ public class Field {
 						list.add(new VanishAnimation(pos, clr));
 						field[pos.y][pos.x] = COLOR_NONE;
 					}
+					// 連鎖アニメーションをリストに追加
+					Point pos = vanishList.get(0);
+					list.add(new ChainAnimation(pos.x, pos.y, chain+1));
+
 					// 連結ボーナスを計算
 					int idx = vanishList.size() - VANISH_COUNT;
 					connectBonus += CONNECT_BONUS[idx];
