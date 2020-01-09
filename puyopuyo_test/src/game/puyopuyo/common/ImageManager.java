@@ -19,6 +19,8 @@ public class ImageManager {
 	public static Image stageImage;
 	/** フォント画像Image */
 	public static Image fontImage;
+	/** 難易度画像Image */
+	public static Image levelImage;
 
 	/**
 	 * 初期化処理
@@ -60,5 +62,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/font.png");
 		icon = new ImageIcon(url);
 		fontImage = icon.getImage();
+
+		// 難易度画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/level.png");
+		icon = new ImageIcon(url);
+		levelImage = icon.getImage();
 	}
 }

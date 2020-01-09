@@ -78,6 +78,8 @@ public class TokotonScreen extends BaseScreen {
 		field = new Field();
 		// スコアを生成
 		score = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
+		// NEXTぷよを生成
+		nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, 2);
 		// アニメーション
 		animation = new ArrayList<BaseAnimation>();
 		// 処理フェーズを初期化
@@ -218,10 +220,7 @@ public class TokotonScreen extends BaseScreen {
 
 		if(levelSelect == null) {
 			// 難易度選択を生成
-			levelSelect = new LevelSelect(2*Field.TILE_SIZE,
-					4*Field.TILE_SIZE,
-					4*Field.TILE_SIZE,
-					6*Field.TILE_SIZE);
+			levelSelect = new LevelSelect(0, 0);
 		}
 
 		// 上方向キー押下時

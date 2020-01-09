@@ -1,27 +1,72 @@
 package game.puyopuyo.parts;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+
+import game.puyopuyo.common.ImageManager;
 
 public class LevelSelect {
 
-	/** 難易度 */
-	private static final int[] LEVEL = {3, 4, 5};
-	/** 難易度文言 */
-	private static final String[] MESSAGE = {"激甘", "中辛", "激辛"};
+	/** SELECT画像：基準座標x */
+	private static final int IMG_SELECT_X = 201;
+	/** SELECT画像：基準座標y */
+	private static final int IMG_SELECT_Y = 4;
+	/** SELECT画像：幅 */
+	private static final int IMG_SELECT_W = 48;
+	/** SELECT画像：高さ */
+	private static final int IMG_SELECT_H = 15;
 
-	/** 描画座標x */
+	/** LEVEL画像：基準座標x */
+	private static final int IMG_LEVEL_X = 201;
+	/** LEVEL画像：基準座標y */
+	private static final int IMG_LEVEL_Y = 21;
+	/** LEVEL画像：幅 */
+	private static final int IMG_LEVEL_W = 40;
+	/** LEVEL画像：高さ */
+	private static final int IMG_LEVEL_H = 15;
+
+	/** 枠画像：基準座標x */
+	private static final int IMG_FRAME_X = 6;
+	/** 枠画像：基準座標y */
+	private static final int IMG_FRAME_Y = 4;
+	/** 枠画像：幅 */
+	private static final int IMG_FRAME_W = 70;
+	/** 枠画像：高さ */
+	private static final int IMG_FRAME_H = 134;
+
+	/** 数字画像：基準座標x */
+	private static final int IMG_NUM_X = 1;
+	/** 数字画像：基準座標y */
+	private static final int IMG_NUM_Y = 71;
+	/** 数字画像：幅 */
+	private static final int IMG_NUM_W = 8;
+	/** 数字画像：高さ */
+	private static final int IMG_NUM_H = 9;
+
+	/** カレー画像：基準座標x */
+	private static final int IMG_CURRY_X = 78;
+	/** カレー画像：基準座標y */
+	private static final int IMG_CURRY_Y = 2;
+	/** カレー画像：幅 */
+	private static final int IMG_CURRY_W = 40;
+	/** カレー画像：高さ */
+	private static final int IMG_CURRY_H = 17;
+
+	/** 難易度画像：基準座標x */
+	private static final int IMG_LEVEL_STR_X = 121;
+	/** 難易度画像：基準座標y */
+	private static final int IMG_LEVEL_STR_Y = 2;
+	/** 難易度画像：幅 */
+	private static final int IMG_LEVEL_STR_W = 36;
+	/** 難易度画像：高さ */
+	private static final int IMG_LEVEL_STR_H = 17;
+
+	/** 難易度 */
+	private static final int[] LEVEL = {3, 3, 4, 4, 5};
+
+	/** 基準座標x */
 	private int x;
-	/** 描画座標y */
+	/** 基準座標y */
 	private int y;
-	/** 枠の幅 */
-	private int width;
-	/** 枠の高さ */
-	private int height;
 	/** 選択中の難易度インデックス */
 	private int selectIdx;
 
@@ -33,13 +78,11 @@ public class LevelSelect {
 	 * @param width
 	 * @param height
 	 */
-	public LevelSelect(int x, int y, int width, int height) {
+	public LevelSelect(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
 
-		selectIdx = 0;
+		selectIdx = 2;
 	}
 
 	/**
@@ -74,27 +117,81 @@ public class LevelSelect {
 	 */
 	public void draw(Graphics g) {
 
-		// 枠線を描画
-		Graphics2D g2 = (Graphics2D)g;
-		Stroke tmps = g2.getStroke();
-		BasicStroke bs = new BasicStroke(5);
-		g2.setStroke(bs);
-		g2.setColor(Color.WHITE);
-		g2.drawRoundRect(x, y, width, height, 30, 30);
-		g2.setStroke(tmps);
+		// 「SELECT LEVEL」を描画
+		g.drawImage(ImageManager.levelImage,
+				x + 32,
+				y + 80,
+				x + 32 + IMG_SELECT_W * 2,
+				y + 80 + IMG_SELECT_H * 2,
+				IMG_SELECT_X,
+				IMG_SELECT_Y,
+				IMG_SELECT_X + IMG_SELECT_W,
+				IMG_SELECT_Y + IMG_SELECT_H,
+				null);
+		g.drawImage(ImageManager.levelImage,
+				x + 144,
+				y + 80,
+				x + 144 + IMG_LEVEL_W * 2,
+				y + 80  + IMG_LEVEL_H * 2,
+				IMG_LEVEL_X,
+				IMG_LEVEL_Y,
+				IMG_LEVEL_X + IMG_LEVEL_W,
+				IMG_LEVEL_Y + IMG_LEVEL_H,
+				null);
 
-		Font tmpf = g.getFont();
-		g.setFont(new Font("Meiryo UI", Font.BOLD, 24));
-		for(int i=0; i<MESSAGE.length; i++) {
-			// 難易度文言の描画色を設定
-			if(i == selectIdx) {
-				g.setColor(Color.RED);
-			} else {
-				g.setColor(Color.WHITE);
+		// 枠線を描画
+		g.drawImage(ImageManager.levelImage,
+				x + 40,
+				y + 128,
+				x + 40  + IMG_FRAME_W * 2,
+				y + 128 + IMG_FRAME_H * 2,
+				IMG_FRAME_X,
+				IMG_FRAME_Y,
+				IMG_FRAME_X + IMG_FRAME_W,
+				IMG_FRAME_Y + IMG_FRAME_H,
+				null);
+
+		int ty = 150;
+		for(int i=0; i<LEVEL.length; i++) {
+			// 数字を描画
+			g.drawImage(ImageManager.fontImage,
+					x + 96,
+					y + ty + i * IMG_NUM_H * 4,
+					x + 96 + IMG_NUM_W * 4,
+					y + ty + i * IMG_NUM_H * 4 + IMG_NUM_H * 4,
+					IMG_NUM_X + (i + 1) * IMG_NUM_W,
+					IMG_NUM_Y,
+					IMG_NUM_X + (i + 1) * IMG_NUM_W + IMG_NUM_W,
+					IMG_NUM_Y + IMG_NUM_H,
+					null);
+
+			// 選択中の難易度の場合
+			if(selectIdx == i) {
+				// カレーを描画
+				g.drawImage(ImageManager.levelImage,
+						x + 138,
+						y + ty + i * IMG_NUM_H * 4,
+						x + 138 + IMG_CURRY_W * 2,
+						y + ty + i * IMG_NUM_H * 4 + IMG_CURRY_H * 2,
+						IMG_CURRY_X,
+						IMG_CURRY_Y + i * IMG_CURRY_H,
+						IMG_CURRY_X + IMG_CURRY_W,
+						IMG_CURRY_Y + i * IMG_CURRY_H + IMG_CURRY_H,
+						null);
+
+				// 難易度を描画
+				g.drawImage(ImageManager.levelImage,
+						x + 138,
+						y + ty + i * IMG_NUM_H * 4 + IMG_CURRY_H * 2,
+						x + 138 + IMG_LEVEL_STR_W * 2,
+						y + ty + i * IMG_NUM_H * 4 + IMG_CURRY_H * 2 + IMG_LEVEL_STR_H * 2,
+						IMG_LEVEL_STR_X,
+						IMG_LEVEL_STR_Y + i * IMG_LEVEL_STR_H,
+						IMG_LEVEL_STR_X + IMG_LEVEL_STR_W,
+						IMG_LEVEL_STR_Y + i * IMG_LEVEL_STR_H + IMG_LEVEL_STR_H,
+						null);
 			}
-			// 難易度文言を描画
-			g.drawString(MESSAGE[i], x+30, y+(50+i*50));
+			ty += 12;
 		}
-		g.setFont(tmpf);
 	}
 }
