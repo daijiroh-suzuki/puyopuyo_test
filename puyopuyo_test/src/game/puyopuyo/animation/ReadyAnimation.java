@@ -2,7 +2,6 @@ package game.puyopuyo.animation;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 public class ReadyAnimation extends BaseAnimation {
@@ -38,11 +37,6 @@ public class ReadyAnimation extends BaseAnimation {
 		Font tmp = g.getFont();
 		// 描画フォントを設定
 		g.setFont(new Font("Meiryo UI", Font.BOLD, 24));
-		// フォント情報を取得
-		FontMetrics fm = g.getFontMetrics();
-		// アニメーション背景を描画
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 240-fm.getHeight(), 256, fm.getHeight()+10);
 		// 文字列を描画
 		g.setColor(Color.WHITE);
 		if(frameCount <= 45) {
