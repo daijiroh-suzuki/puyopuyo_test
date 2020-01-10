@@ -11,18 +11,20 @@ import game.puyopuyo.animation.DropAnimation;
 import game.puyopuyo.animation.GameOverAnimation;
 import game.puyopuyo.animation.PauseAnimation;
 import game.puyopuyo.animation.ReadyAnimation;
-import game.puyopuyo.common.ImageManager;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.LevelSelect;
 import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Score;
+import game.puyopuyo.parts.Stage;
 
 public class TokotonScreen extends BaseScreen {
 
 	/** コントローラー */
 	private Controller controller;
+	/** ステージ */
+	private Stage stage;
 	/** フィールド */
 	private Field field;
 	/** Nextぷよ */
@@ -74,6 +76,8 @@ public class TokotonScreen extends BaseScreen {
 	public TokotonScreen(Controller controller) {
 		// コントローラーを設定
 		this.controller = controller;
+		// ステージを生成
+		stage = new Stage();
 		// フィールドを生成
 		field = new Field();
 		// スコアを生成
@@ -166,16 +170,7 @@ public class TokotonScreen extends BaseScreen {
 		g.fillRect(0, 0, MainPanel.WIDTH, MainPanel.HEIGHT);
 
 		// ステージ(背景)を描画
-		g.drawImage(ImageManager.stageImage,
-				0,
-				32,
-				640,
-				480,
-				0,
-				0,
-				320,
-				224,
-				null);
+		stage.drawBg(g);
 
 		// フィールドを描画
 		field.draw(g);
@@ -196,16 +191,7 @@ public class TokotonScreen extends BaseScreen {
 		}
 
 		// ステージ(前景)を描画
-		g.drawImage(ImageManager.stageImage,
-				0,
-				32,
-				640,
-				480,
-				320,
-				0,
-				640,
-				224,
-				null);
+		stage.drawFg(g);
 
 		// アニメーション描画
 		for(BaseAnimation a : animation) {
