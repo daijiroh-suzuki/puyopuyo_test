@@ -14,35 +14,44 @@ import game.puyopuyo.animation.ReadyAnimation;
 import game.puyopuyo.controller.Controller;
 import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
-import game.puyopuyo.parts.LevelSelect;
 import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Phase;
 import game.puyopuyo.parts.Score;
 import game.puyopuyo.parts.Stage;
 
-public class TokotonScreen extends BaseScreen {
+public class HitorideScreen extends BaseScreen {
 
 	/** コントローラー */
 	private Controller controller;
 	/** ステージ */
 	private Stage stage;
-	/** フィールド */
-	private Field field;
-	/** Nextぷよ */
-	private NextPuyo nextPuyo;
-	/** 組ぷよ */
-	private KumiPuyo kumiPuyo;
-	/** スコア */
-	private Score score;
-	/** 難易度選択 */
-	private LevelSelect levelSelect;
-	/** アニメーション */
-	private List<BaseAnimation> animation;
-	/** 処理フェーズ */
-	private Phase phase;
+	/** フィールド(1P) */
+	private Field field1;
+	/** フィールド(NPC) */
+	private Field field2;
+	/** NEXTぷよ(1P) */
+	private NextPuyo nextPuyo1;
+	/** NEXTぷよ(NPC) */
+	private NextPuyo nextPuyo2;
+	/** 組ぷよ(1P) */
+	private KumiPuyo kumiPuyo1;
+	/** 組ぷよ(NPC) */
+	private KumiPuyo kumiPuyo2;
+	/** スコア(1P) */
+	private Score score1;
+	/** スコア(NPC) */
+	private Score score2;
+	/** アニメーションリスト(1P) */
+	private List<BaseAnimation> animation1;
+	/** アニメーションリスト(NPC) */
+	private List<BaseAnimation> animation2;
+	/** 処理フェーズ(1P) */
+	private Phase phase1;
+	/** 処理フェーズ(NPC) */
+	private Phase phase2;
 
 	/** フレームカウント */
-	private int frameCount;
+	private int frameCount = 0;
 	/** 組ぷよが自動落下するフレーム数 */
 	private int autoDropCount = 30;
 
@@ -58,21 +67,29 @@ public class TokotonScreen extends BaseScreen {
 	 *
 	 * @param controller
 	 */
-	public TokotonScreen(Controller controller) {
+	public HitorideScreen(Controller controller) {
 		// コントローラーを設定
 		this.controller = controller;
 		// ステージを生成
 		stage = new Stage();
 		// フィールドを生成
-		field = new Field();
+		field1 = new Field(0, 0);
+		field2 = new Field(384, 0);
 		// スコアを生成
-		score = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
+		score1 = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
+		score2 = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE);
 		// NEXTぷよを生成
-		nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, 2);
-		// アニメーション
-		animation = new ArrayList<BaseAnimation>();
+		nextPuyo1 = new NextPuyo(224, 128, 4);
+		nextPuyo2 = new NextPuyo(320, 128, 4);
+		// アニメーションリストを生成
+		animation1 = new ArrayList<BaseAnimation>();
+		animation2 = new ArrayList<BaseAnimation>();
+		// 準備アニメーションを追加
+		animation1.add(new ReadyAnimation());
+		animation2.add(new ReadyAnimation(384, 0));
 		// 処理フェーズを初期化
-		phase = Phase.SELECT;
+		phase1 = Phase.READY;
+		phase2 = Phase.READY;
 		// 一時停止フラグ
 		pause = false;
 	}
@@ -90,11 +107,10 @@ public class TokotonScreen extends BaseScreen {
 				pause = true;
 				// 一時停止アニメーションをリストに追加
 				pa = new PauseAnimation();
-				animation.add(pa);
+				animation1.add(pa);
 			} else {
 				// 一時停止フラグOFF
 				pause = false;
-				// 一時停止アニメーション削除
 				pa.setRunning(false);
 			}
 			controller.setKeySelect(false);
@@ -102,11 +118,7 @@ public class TokotonScreen extends BaseScreen {
 		// 一時停止中の場合は処理を中断
 		if(pause) return;
 
-		switch(phase) {
-		case SELECT:
-			// 難易度選択中フェーズ
-			selectPhase();
-			break;
+		switch(phase1) {
 		case READY:
 			// 準備中フェーズ
 			readyPhase();
@@ -127,19 +139,22 @@ public class TokotonScreen extends BaseScreen {
 			// ゲームオーバーフェーズ
 			gameOverPhase();
 			break;
+		default:
+			// とりあえず難易度選択はなし
+			break;
 		}
 
 		// アニメーション更新
-		for(int i=0; i<animation.size(); i++) {
-			BaseAnimation a = animation.get(i);
+		for(int i=0; i<animation1.size(); i++) {
+			BaseAnimation a = animation1.get(i);
 			a.update();
 			if(!a.isRunning()) {
 				if(a instanceof DropAnimation) {
 					// 一時非表示を解除
-					field.displayTile(((DropAnimation)a).getTo());
+					field1.displayTile(((DropAnimation)a).getTo());
 				}
-				// 完了したアニーメーションを削除
-				animation.remove(i);
+				// 完了したアニメーションを削除
+				animation1.remove(i);
 				i--;
 			}
 		}
@@ -158,64 +173,37 @@ public class TokotonScreen extends BaseScreen {
 		stage.drawBg(g);
 
 		// フィールドを描画
-		field.draw(g);
+		field1.draw(g);
+		field2.draw(g);
 		// スコアを描画
-		score.draw(g);
+		score1.draw(g);
+		score2.draw(g);
 
-		// Nextぷよを描画
-		if(nextPuyo != null) {
-			nextPuyo.draw(g);
+		// NEXTぷよを描画
+		if(nextPuyo1 != null) {
+			nextPuyo1.draw(g);
 		}
+		if(nextPuyo2 != null) {
+			nextPuyo2.draw(g);
+		}
+
 		// 組ぷよを描画
-		if(kumiPuyo != null) {
-			kumiPuyo.draw(g);
+		if(kumiPuyo1 != null) {
+			kumiPuyo1.draw(g);
 		}
-		// 難易度選択を描画
-		if(levelSelect != null) {
-			levelSelect.draw(g);
+		if(kumiPuyo2 != null) {
+			kumiPuyo2.draw(g);
 		}
 
 		// ステージ(前景)を描画
 		stage.drawFg(g);
 
 		// アニメーション描画
-		for(BaseAnimation a : animation) {
+		for(BaseAnimation a : animation1) {
 			a.draw(g);
 		}
-	}
-
-	/**
-	 * 難易度選択中フェーズ
-	 */
-	private void selectPhase() {
-
-		if(levelSelect == null) {
-			// 難易度選択を生成
-			levelSelect = new LevelSelect(0, 0);
-		}
-
-		// 上方向キー押下時
-		if(controller.isKeyUp()) {
-			levelSelect.keyUp();
-			controller.setKeyUp(false);
-		}
-		// 下方向キー押下時
-		if(controller.isKeyDown()) {
-			levelSelect.keyDown();
-			controller.setKeyDown(false);
-		}
-		// Startキー押下時
-		if(controller.isKeyStart()) {
-			// 選択された難易度を取得
-			int level = levelSelect.getLevel();
-			// NEXTぷよの生成
-			nextPuyo = new NextPuyo(7*Field.TILE_SIZE, 4*Field.TILE_SIZE, level);
-			// 難易度選択を削除
-			levelSelect = null;
-			// 準備アニメーションを追加
-			animation.add(new ReadyAnimation());
-			// 処理フェーズを準備中に変更
-			phase = Phase.READY;
+		for(BaseAnimation a : animation2) {
+			a.draw(g);
 		}
 	}
 
@@ -224,11 +212,11 @@ public class TokotonScreen extends BaseScreen {
 	 */
 	private void readyPhase() {
 		// 準備中処理が完了したか？
-		if(!isReady(animation)) {
+		if(!isReady(animation1)) {
 			// 組ぷよを生成
-			kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+			kumiPuyo1 = new KumiPuyo(field1, nextPuyo1.pop());
 			// 処理フェーズを操作中に変更
-			phase = Phase.CONTROL;
+			phase1 = Phase.CONTROL;
 		}
 	}
 
@@ -243,22 +231,22 @@ public class TokotonScreen extends BaseScreen {
 		// 上方向キー押下時（削除予定）
 		if(controller.isKeyUp()) {
 			// 組ぷよを上移動
-			kumiPuyo.move(KumiPuyo.DIR_UP);
+			kumiPuyo1.move(KumiPuyo.DIR_UP);
 			controller.setKeyUp(false);
 		}
 		// 下方向キー押下時 or 組ぷよ自動落下時
 		if(controller.isKeyDown() || frameCount >= autoDropCount) {
-			// フレームカウントを初期化
+			// フレーム貨運ｔおを初期化
 			frameCount = 0;
 			// 組ぷよを下移動
-			boolean isFixed = kumiPuyo.move(KumiPuyo.DIR_DOWN);
+			boolean isFixed = kumiPuyo1.move(KumiPuyo.DIR_DOWN);
 			if(isFixed) {
 				// 落下処理
-				field.drop(animation);
+				field1.drop(animation1);
 				// 組ぷよを削除
-				kumiPuyo = null;
+				kumiPuyo1 = null;
 				// 処理フェーズを落下処理中に変更
-				phase = Phase.DROP;
+				phase1 = Phase.DROP;
 				return;
 			}
 			controller.setKeyDown(false);
@@ -266,25 +254,25 @@ public class TokotonScreen extends BaseScreen {
 		// 右方向キー押下時
 		if(controller.isKeyRight()) {
 			// 組ぷよを右移動
-			kumiPuyo.move(KumiPuyo.DIR_RIGHT);
+			kumiPuyo1.move(KumiPuyo.DIR_RIGHT);
 			controller.setKeyRight(false);
 		}
 		// 左方向キー押下時
 		if(controller.isKeyLeft()) {
 			// 組ぷよを左移動
-			kumiPuyo.move(KumiPuyo.DIR_LEFT);
+			kumiPuyo1.move(KumiPuyo.DIR_LEFT);
 			controller.setKeyLeft(false);
 		}
 		// Aキー押下時
 		if(controller.isKeyA()) {
 			// 組ぷよを右回転
-			kumiPuyo.turn(true);
+			kumiPuyo1.turn(true);
 			controller.setKeyA(false);
 		}
 		// Bキー押下時
 		if(controller.isKeyB()) {
 			// 組ぷよを左回転
-			kumiPuyo.turn(false);
+			kumiPuyo1.turn(false);
 			controller.setKeyB(false);
 		}
 	}
@@ -294,27 +282,27 @@ public class TokotonScreen extends BaseScreen {
 	 */
 	private void dropPhase() {
 		// 落下処理が完了したか？
-		if(!field.isDrop(animation)) {
+		if(!field1.isDrop(animation1)) {
 			// 消滅処理
-			if(field.vanish(animation)) {
+			if(field1.vanish(animation1)) {
 				// 消滅対象ありの場合
 				// スコアを更新
-				score.setScore(field.getScore());
+				score1.setScore(field1.getScore());
 				// 処理フェーズを消滅処理中に変更
-				phase = Phase.VANISH;
-			} else if(field.checkGameOver()) {
+				phase1 = Phase.VANISH;
+			} else if(field1.checkGameOver()) {
 				// 消滅対象なし & ゲームオーバーマスにぷよが存在する場合
 				// ゲームオーバーアニメーションをリストに追加
 				ga = new GameOverAnimation();
-				animation.add(ga);
+				animation1.add(ga);
 				// 処理フェーズをゲームオーバーに変更
-				phase = Phase.GAMEOVER;
+				phase1 = Phase.GAMEOVER;
 			} else {
 				// 消滅対象なしの場合
 				// 新しい組ぷよを生成
-				kumiPuyo = new KumiPuyo(field, nextPuyo.pop());
+				kumiPuyo1 = new KumiPuyo(field1, nextPuyo1.pop());
 				// 処理フェーズを操作中に変更
-				phase = Phase.CONTROL;
+				phase1 = Phase.CONTROL;
 			}
 		}
 	}
@@ -324,11 +312,11 @@ public class TokotonScreen extends BaseScreen {
 	 */
 	private void vanishPhase() {
 		// 消滅処理が完了したか？
-		if(!field.isVanish(animation)) {
+		if(!field1.isVanish(animation1)) {
 			// 落下処理
-			field.drop(animation);
+			field1.drop(animation1);
 			// 処理フェーズを落下処理中に変更
-			phase = Phase.DROP;
+			phase1 = Phase.DROP;
 		}
 	}
 
@@ -341,20 +329,21 @@ public class TokotonScreen extends BaseScreen {
 			// ゲームオーバーアニメーションを削除
 			ga.setRunning(false);
 			// フィールドを初期化
-			field.init();
+			field1.init();
 			// スコアを初期化
-			score.init();
+			score1.init();
+			// 準備アニメーションを追加
+			animation1.add(new ReadyAnimation());
 			// 処理フェーズを操作中に変更
-			phase = Phase.SELECT;
+			phase1 = Phase.READY;
 			controller.setKeyStart(false);
 		}
 	}
 
-	/**
-	 * 準備中判定
+	/** 準備中判定
 	 *
 	 * @param list
-	 * @return true:処理中、false:処理完了
+	 * @return ture:処理中、false:処理完了
 	 */
 	private boolean isReady(List<BaseAnimation> list) {
 		for(BaseAnimation a : list) {

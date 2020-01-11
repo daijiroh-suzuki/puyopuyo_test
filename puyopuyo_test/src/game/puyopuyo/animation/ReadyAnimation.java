@@ -6,6 +6,11 @@ import java.awt.Graphics;
 
 public class ReadyAnimation extends BaseAnimation {
 
+	/** 基準座標x */
+	private int x;
+	/** 基準座標y */
+	private int y;
+
 	/** フレームカウント */
 	private int frameCount;
 
@@ -13,6 +18,20 @@ public class ReadyAnimation extends BaseAnimation {
 	 * コンストラクタ
 	 */
 	public ReadyAnimation() {
+		this(0, 0);
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 */
+	public ReadyAnimation(int x, int y) {
+		// 基準座標を設定
+		this.x = x;
+		this.y = y;
+		// フレームカウントを初期化
 		frameCount = 0;
 	}
 
@@ -41,10 +60,10 @@ public class ReadyAnimation extends BaseAnimation {
 		g.setColor(Color.WHITE);
 		if(frameCount <= 45) {
 			/// 適当に50フレームまではREADYを表示
-			g.drawString("READY", 80, 240);
+			g.drawString("READY", x+80, y+240);
 		} else {
 			// 残りフレームはGOを表示
-			g.drawString("GO", 110, 240);
+			g.drawString("GO", x+110, y+240);
 		}
 		// フォントを変更前に戻す
 		g.setFont(tmp);

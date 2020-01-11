@@ -6,6 +6,11 @@ import java.awt.Graphics;
 
 public class GameOverAnimation extends BaseAnimation {
 
+	/** 基準座標x */
+	private int x;
+	/** 基準座標y */
+	private int y;
+
 	/** 描画色 */
 	private Color clr;
 
@@ -13,6 +18,20 @@ public class GameOverAnimation extends BaseAnimation {
 	 * コンストラクタ
 	 */
 	public GameOverAnimation() {
+		this(0, 0);
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 */
+	public GameOverAnimation(int x, int y) {
+		// 基準座標を設定
+		this.x = x;
+		this.y = y;
+
 		clr = new Color(0, 0, 0, 60);
 	}
 
@@ -36,7 +55,7 @@ public class GameOverAnimation extends BaseAnimation {
 		g.setFont(new Font("Meiryo UI", Font.BOLD, 24));
 		// ゲームオーバー文字列を描画
 		g.setColor(Color.RED);
-		g.drawString("GAME OVER", 50, 240);
+		g.drawString("GAME OVER", x+50, y+240);
 		// フォントを変更前に戻す
 		g.setFont(tmp);
 	}

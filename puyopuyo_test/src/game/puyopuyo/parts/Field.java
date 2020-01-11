@@ -59,6 +59,11 @@ public class Field {
 	/** ぷよが消滅する連結数 */
 	private static final int VANISH_COUNT = 4;
 
+	/** 基準座標x */
+	private int x;
+	/** 基準座標y */
+	private int y;
+
 	/** フィールド配列 */
 	private int[][] field;
 	/** 連結方向配列 */
@@ -91,6 +96,20 @@ public class Field {
 	 * コンストラクタ
 	 */
 	public Field() {
+		this(0, 0);
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 */
+	public Field(int x, int y) {
+
+		// 基準座標を設定
+		this.x = x;
+		this.y = y;
 
 		// フィールド配列を生成
 		field = new int[ROW][COL];
@@ -153,13 +172,13 @@ public class Field {
 
 				// ぷよを描画
 				g.drawImage(ImageManager.puyoImage,
-						j * TILE_SIZE,
-						i * TILE_SIZE,
-						j * TILE_SIZE + TILE_SIZE,
-						i * TILE_SIZE + TILE_SIZE,
-						field[i][j] * TILE_SIZE,
+						x + j * TILE_SIZE,
+						y + i * TILE_SIZE,
+						x + j * TILE_SIZE + TILE_SIZE,
+						y + i * TILE_SIZE + TILE_SIZE,
+						field[i][j]   * TILE_SIZE,
 						connect[i][j] * TILE_SIZE,
-						field[i][j] * TILE_SIZE + TILE_SIZE,
+						field[i][j]   * TILE_SIZE + TILE_SIZE,
 						connect[i][j] * TILE_SIZE + TILE_SIZE,
 						null);
 			}
