@@ -73,27 +73,6 @@ public class Stage {
 	 */
 	public void drawFg(Graphics g) {
 
-		g.drawImage(ImageManager.fontImage,
-				32 * 8 - 8,
-				32 * 3,
-				32 * 8 - 8 + IMG_NUM_W * 3,
-				32 * 3 + IMG_NUM_H * 3,
-				IMG_NUM_X + IMG_NUM_W * 1,
-				IMG_NUM_Y,
-				IMG_NUM_X + IMG_NUM_W * 1 + IMG_NUM_W,
-				IMG_NUM_Y + IMG_NUM_H,
-				null);
-		g.drawImage(ImageManager.fontImage,
-				32 * 8 - 8 + IMG_NUM_W * 3,
-				32 * 3,
-				32 * 8 - 8 + IMG_NUM_W * 3 + IMG_ALP_W * 3,
-				32 * 3 + IMG_ALP_H * 3,
-				IMG_ALP_X + IMG_ALP_W * 15,
-				IMG_ALP_Y,
-				IMG_ALP_X + IMG_ALP_W * 15 + IMG_ALP_W,
-				IMG_ALP_Y + IMG_ALP_H,
-				null);
-
 		g.drawImage(ImageManager.stageImage,
 				0,
 				32,
