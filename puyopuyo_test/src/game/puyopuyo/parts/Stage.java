@@ -24,24 +24,6 @@ public class Stage {
 	/** ステージ前景画像：高さ */
 	private static final int IMG_FG_H = 224;
 
-	/** 数字画像：基準座標x */
-	private static final int IMG_NUM_X = 1;
-	/** 数字画像：基準座標y */
-	private static final int IMG_NUM_Y = 71;
-	/** 数字画像：幅 */
-	private static final int IMG_NUM_W = 8;
-	/** 数字画像：高さ */
-	private static final int IMG_NUM_H = 9;
-
-	/** アルファベット画像：基準座標x */
-	private static final int IMG_ALP_X = 1;
-	/** アルファベット画像：基準座標y */
-	private static final int IMG_ALP_Y = 87;
-	/** アルファベット画像：幅 */
-	private static final int IMG_ALP_W = 8;
-	/** アルファベット画像：高さ */
-	private static final int IMG_ALP_H = 9;
-
 	/**
 	 * コンストラクタ
 	 */
