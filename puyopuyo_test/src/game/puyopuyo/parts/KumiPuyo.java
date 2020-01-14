@@ -23,6 +23,11 @@ public class KumiPuyo {
 	public static final int DIR_RIGHT = 2;
 	public static final int DIR_LEFT = 3;
 
+	/** 基準座標x */
+	private int x;
+	/** 基準座標y */
+	private int y;
+
 	/** フィールド参照 */
 	private Field field;
 
@@ -37,8 +42,27 @@ public class KumiPuyo {
 
 	/**
 	 * コンストラクタ
+	 *
+	 * @param field フィールド参照
+	 * @param form 組ぷよの形
 	 */
 	public KumiPuyo(Field field, int[][] form) {
+		this(0, 0, field, form);
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 * @param field フィールド参照
+	 * @param form 組ぷよの形
+	 */
+	public KumiPuyo(int x, int y, Field field, int[][] form) {
+
+		// 基準座標を設定
+		this.x = x;
+		this.y = y;
 
 		// フィールド参照を取得
 		this.field = field;
@@ -145,10 +169,10 @@ public class KumiPuyo {
 				// 軸ぷよは画像を変更
 				if(j == axis.x && i == axis.y) {
 					g.drawImage(ImageManager.puyoImage2,
-							(pos.x + j) * TILE_SIZE,
-							(pos.y + i) * TILE_SIZE,
-							(pos.x + j) * TILE_SIZE + TILE_SIZE,
-							(pos.y + i) * TILE_SIZE + TILE_SIZE,
+							x + (pos.x + j) * TILE_SIZE,
+							y + (pos.y + i) * TILE_SIZE,
+							x + (pos.x + j) * TILE_SIZE + TILE_SIZE,
+							y + (pos.y + i) * TILE_SIZE + TILE_SIZE,
 							form[i][j] * TILE_SIZE,
 							0,
 							form[i][j] * TILE_SIZE + TILE_SIZE,
@@ -156,10 +180,10 @@ public class KumiPuyo {
 							null);
 				} else {
 					g.drawImage(ImageManager.puyoImage,
-							(pos.x + j) * TILE_SIZE,
-							(pos.y + i) * TILE_SIZE,
-							(pos.x + j) * TILE_SIZE + TILE_SIZE,
-							(pos.y + i) * TILE_SIZE + TILE_SIZE,
+							x + (pos.x + j) * TILE_SIZE,
+							y + (pos.y + i) * TILE_SIZE,
+							x + (pos.x + j) * TILE_SIZE + TILE_SIZE,
+							y + (pos.y + i) * TILE_SIZE + TILE_SIZE,
 							form[i][j] * TILE_SIZE,
 							0,
 							form[i][j] * TILE_SIZE + TILE_SIZE,

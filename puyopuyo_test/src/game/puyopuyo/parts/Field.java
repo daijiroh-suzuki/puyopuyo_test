@@ -245,6 +245,8 @@ public class Field {
 
 					// 落下アニメーションをリストに追加
 					list.add(new DropAnimation(
+							x,
+							y,
 							new Point(j, i),
 							new Point(j, k-1),
 							field[i][j]));
@@ -322,12 +324,12 @@ public class Field {
 						// 色数取得用HashSetに追加
 						colorSet.add(clr);
 						// 消滅アニメーションをリストに追加
-						list.add(new VanishAnimation(pos, clr));
+						list.add(new VanishAnimation(x, y, pos, clr));
 						field[pos.y][pos.x] = COLOR_NONE;
 					}
 					// 連鎖アニメーションをリストに追加
 					Point pos = vanishList.get(0);
-					list.add(new ChainAnimation(pos.x, pos.y, chain+1));
+					list.add(new ChainAnimation(x, y, pos, chain+1));
 
 					// 連結ボーナスを計算
 					int idx = vanishList.size() - VANISH_COUNT;
@@ -475,6 +477,34 @@ public class Field {
 	 */
 	public void displayTile(Point pos) {
 		displayTile(pos.x, pos.y);
+	}
+
+	/**
+	 * @return x
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @param x セットする x
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * @return y
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * @param y セットする y
+	 */
+	public void setY(int y) {
+		this.y = y;
 	}
 
 	/**

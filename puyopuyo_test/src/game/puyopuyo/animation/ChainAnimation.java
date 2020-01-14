@@ -1,6 +1,7 @@
 package game.puyopuyo.animation;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 import game.puyopuyo.common.CommonUtil;
 import game.puyopuyo.common.ImageManager;
@@ -25,10 +26,12 @@ public class ChainAnimation extends BaseAnimation {
 	/** フォント画像：高さ */
 	private static int IMG_FONT_H = 12;
 
-	/** 表示位置x座標 */
+	/** 基準座標x */
 	private int x;
-	/** 表示位置y座標 */
+	/** 基準座標y */
 	private int y;
+	/** 表示位置 */
+	private Point pos;
 	/** 連鎖数 */
 	private int[] chain;
 	/** フレームカウント */
@@ -37,13 +40,21 @@ public class ChainAnimation extends BaseAnimation {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param x
-	 * @param y
-	 * @param chain
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 * @param pos 表示位置
+	 * @param chain 連鎖数
 	 */
-	public ChainAnimation(int x, int y, int chain) {
-		this.x = CommonUtil.grid2Pixel(x);
-		this.y = CommonUtil.grid2Pixel(y);
+	public ChainAnimation(int x, int y, Point pos, int chain) {
+		// 基準座標を設定
+		this.x = x;
+		this.y = y;
+
+		this.pos = new Point(
+				CommonUtil.grid2Pixel(pos.x),
+				CommonUtil.grid2Pixel(pos.y));
+
+		// フレームカウントを初期化
 		frameCount = 0;
 
 		char[] str = String.valueOf(chain).toCharArray();
@@ -73,10 +84,10 @@ public class ChainAnimation extends BaseAnimation {
 		// 連鎖数を描画
 		for(int i=0; i<chain.length; i++) {
 			g.drawImage(ImageManager.fontImage,
-					x + i * IMG_FONT_W * 2,
-					y,
-					x + i * IMG_FONT_W * 2 + IMG_FONT_W * 2,
-					y + IMG_FONT_H * 2,
+					x + pos.x + i * IMG_FONT_W * 2,
+					y + pos.y,
+					x + pos.x + i * IMG_FONT_W * 2 + IMG_FONT_W * 2,
+					y + pos.y + IMG_FONT_H * 2,
 					IMG_FONT_X + chain[i] * IMG_FONT_W,
 					IMG_FONT_Y,
 					IMG_FONT_X + chain[i] * IMG_FONT_W + IMG_FONT_W,
@@ -86,10 +97,10 @@ public class ChainAnimation extends BaseAnimation {
 
 		// 「れんさ」を描画
 		g.drawImage(ImageManager.fontImage,
-				x + chain.length * IMG_FONT_W * 2,
-				y,
-				x + chain.length * IMG_FONT_W * 2 + IMG_CHAIN_W * 2,
-				y + IMG_CHAIN_H * 2,
+				x + pos.x + chain.length * IMG_FONT_W * 2,
+				y + pos.y,
+				x + pos.x + chain.length * IMG_FONT_W * 2 + IMG_CHAIN_W * 2,
+				y + pos.y + IMG_CHAIN_H * 2,
 				IMG_CHAIN_X,
 				IMG_CHAIN_Y,
 				IMG_CHAIN_X + IMG_CHAIN_W,
