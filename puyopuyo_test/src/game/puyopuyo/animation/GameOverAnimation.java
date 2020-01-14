@@ -47,7 +47,7 @@ public class GameOverAnimation extends BaseAnimation {
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(clr);
-		g.fillRect(32, 64, 192, 416);
+		g.fillRect(x+32, y+64, 192, 416);
 
 		// 変更前のフォントを取得
 		Font tmp = g.getFont();
