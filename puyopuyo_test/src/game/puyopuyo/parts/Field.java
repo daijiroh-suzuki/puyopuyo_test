@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import game.puyopuyo.animation.BaseAnimation;
 import game.puyopuyo.animation.ChainAnimation;
@@ -301,10 +302,13 @@ public class Field {
 		}
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[i].length; j++) {
-				// 空白マスと壁マスは処理対象外
-				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
+				// 空白マスと壁マスとおじゃまぷよは処理対象外
+				if(field[i][j] == COLOR_NONE
+						|| field[i][j] == COLOR_WALL
+						|| field[i][j] == COLOR_O) {
 					continue;
 				}
+
 				// チェック済みのマスは処理対象外
 				if(vanish[i][j]) {
 					continue;
@@ -412,8 +416,10 @@ public class Field {
 			for(int j=0; j<field[i].length; j++) {
 				connect[i][j] = 0;
 
-				// 空白マスと壁マスは処理対象外
-				if(field[i][j] == COLOR_NONE || field[i][j] == COLOR_WALL) {
+				// 空白マスと壁マスとおじゃまぷよは処理対象外
+				if(field[i][j] == COLOR_NONE
+						|| field[i][j] == COLOR_WALL
+						|| field[i][j] == COLOR_O) {
 					continue;
 				}
 
@@ -439,6 +445,16 @@ public class Field {
 			return true;
 		}
 		return false;
+	}
+
+	public void addOjamaPuyo(int count) {
+
+		for(int i=0; i<count; i++) {
+			int distX = new Random().nextInt(6) + 1;
+			int distY = 2;
+
+			field[distY][distX] = COLOR_O;
+		}
 	}
 
 	/**

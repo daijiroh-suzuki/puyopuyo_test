@@ -402,6 +402,13 @@ public class HitorideScreen extends BaseScreen {
 				p.animation.add(ga);
 				// 処理フェーズをゲームオーバーに変更
 				p.phase = Phase.GAMEOVER;
+			} else if(p.yokokuPuyo.getCount() != 0) {
+				// 消滅対象なしで予告ぷよありの場合
+				// おじゃまぷよを追加
+				p.field.addOjamaPuyo(p.yokokuPuyo.getCount());
+				p.yokokuPuyo.subCount(p.yokokuPuyo.getCount());
+				// 処理フェーズを消滅処理中に変更
+				p.phase = Phase.VANISH;
 			} else {
 				// 消滅対象なしの場合
 				// 新しい組ぷよを生成
