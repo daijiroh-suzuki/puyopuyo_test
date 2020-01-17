@@ -299,7 +299,7 @@ public class TokotonScreen extends BaseScreen {
 			if(field.vanish(animation)) {
 				// 消滅対象ありの場合
 				// スコアを更新
-				score.setScore(field.getScore());
+				score.addScore(field.getScore());
 				// 処理フェーズを消滅処理中に変更
 				phase = Phase.VANISH;
 			} else if(field.checkGameOver()) {

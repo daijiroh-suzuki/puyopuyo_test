@@ -66,7 +66,7 @@ public class Score {
 	 */
 	public void init() {
 		score = 0;
-		setScore(0);
+		addScore(0);
 	}
 
 	/**
@@ -79,18 +79,18 @@ public class Score {
 	}
 
 	/**
-	 * スコアを設定
+	 * スコアを加算
 	 *
 	 * @param score
 	 */
-	public void setScore(int score) {
-		if(score > MAX) {
+	public void addScore(int score) {
+		if(this.score + score > MAX) {
 			this.score = MAX;
 		} else {
-			this.score = score;
+			this.score += score;
 		}
 
-		char[] str = String.format("%07d", score).toCharArray();
+		char[] str = String.format("%07d", this.score).toCharArray();
 		scoreArray = new int[str.length];
 		for(int i=0; i<str.length; i++) {
 			scoreArray[i] = Character.getNumericValue(str[i]);

@@ -356,7 +356,7 @@ public class Field {
 			}
 			// スコアを計算
 			// ぷよの消えた数×10 (連鎖ボーナス + 連結ボーナス + 色数ボーナス)
-			score += pcnt * 10 * bonus;
+			score = pcnt * 10 * bonus;
 		} else {
 			// 消滅対象なしの場合は連鎖数を初期化
 			chain = 0;

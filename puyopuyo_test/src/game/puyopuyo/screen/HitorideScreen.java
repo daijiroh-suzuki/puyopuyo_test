@@ -54,6 +54,8 @@ public class HitorideScreen extends BaseScreen {
 		public KumiPuyo kumiPuyo;
 		/** 予告ぷよ */
 		public YokokuPuyo yokokuPuyo;
+		/** 相手の予告ぷよ */
+		public YokokuPuyo enemyYokoku;
 		/** スコア */
 		public Score score;
 		/** アニメーションリスト */
@@ -92,6 +94,10 @@ public class HitorideScreen extends BaseScreen {
 		npc.score      = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE);
 		npc.animation  = new ArrayList<BaseAnimation>();
 		npc.phase      = Phase.READY;
+
+		// 相手の予告ぷよを設定
+		player.enemyYokoku = npc.yokokuPuyo;
+		npc.enemyYokoku = player.yokokuPuyo;
 
 		// 準備アニメーションを追加
 		player.animation.add(new ReadyAnimation());
@@ -384,7 +390,9 @@ public class HitorideScreen extends BaseScreen {
 			if(p.field.vanish(p.animation)) {
 				// 消滅対象ありの場合
 				// スコアを更新
-				p.score.setScore(p.field.getScore());
+				p.score.addScore(p.field.getScore());
+				// 相手の予告ぷよを更新
+				p.enemyYokoku.addCount(p.field.getScore() / 70);
 				// 処理フェーズを消滅処理中に変更
 				p.phase = Phase.VANISH;
 			} else if(p.field.checkGameOver()) {

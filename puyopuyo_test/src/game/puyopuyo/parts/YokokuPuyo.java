@@ -38,9 +38,14 @@ public class YokokuPuyo {
 	public YokokuPuyo(int x, int y) {
 		this.x = x;
 		this.y = y;
-		count = 12;
+		count = 0;
 	}
 
+	/**
+	 * 描画処理
+	 *
+	 * @param g
+	 */
 	public void draw(Graphics g) {
 
 		// 計算用おじゃまぷよ個数
@@ -71,5 +76,14 @@ public class YokokuPuyo {
 				dispCount++;
 			}
 		}
+	}
+
+	/**
+	 * おじゃまぷよの個数を加算
+	 *
+	 * @param count
+	 */
+	public void addCount(int count) {
+		this.count += count;
 	}
 }
