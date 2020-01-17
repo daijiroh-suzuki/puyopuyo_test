@@ -21,6 +21,8 @@ public class ImageManager {
 	public static Image fontImage;
 	/** 難易度画像Image */
 	public static Image levelImage;
+	/** 予告ぷよ画像Image */
+	public static Image yokokuImage;
 
 	/**
 	 * 初期化処理
@@ -67,5 +69,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/level.png");
 		icon = new ImageIcon(url);
 		levelImage = icon.getImage();
+
+		// 予告ぷよ画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/yokoku.gif");
+		icon = new ImageIcon(url);
+		yokokuImage = icon.getImage();
 	}
 }

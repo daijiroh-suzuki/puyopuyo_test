@@ -19,6 +19,7 @@ import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Phase;
 import game.puyopuyo.parts.Score;
 import game.puyopuyo.parts.Stage;
+import game.puyopuyo.parts.YokokuPuyo;
 
 public class HitorideScreen extends BaseScreen {
 
@@ -51,6 +52,8 @@ public class HitorideScreen extends BaseScreen {
 		public NextPuyo nextPuyo;
 		/** 組ぷよ */
 		public KumiPuyo kumiPuyo;
+		/** 予告ぷよ */
+		public YokokuPuyo yokokuPuyo;
 		/** スコア */
 		public Score score;
 		/** アニメーションリスト */
@@ -73,20 +76,22 @@ public class HitorideScreen extends BaseScreen {
 		stage = new Stage();
 
 		// プレイヤーセット(1P)を生成
-		player           = new PlayerSet();
-		player.field     = new Field(0, 0);
-		player.nextPuyo  = new NextPuyo(224, 128, 4);
-		player.score     = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
-		player.animation = new ArrayList<BaseAnimation>();
-		player.phase     = Phase.READY;
+		player            = new PlayerSet();
+		player.field      = new Field(0, 0);
+		player.nextPuyo   = new NextPuyo(224, 128, 4);
+		player.yokokuPuyo = new YokokuPuyo(32, 32);
+		player.score      = new Score(8*Field.TILE_SIZE, 12*Field.TILE_SIZE);
+		player.animation  = new ArrayList<BaseAnimation>();
+		player.phase      = Phase.READY;
 
 		// プレイヤーセット(NPC)を生成
 		npc = new PlayerSet();
-		npc.field     = new Field(384, 0);
-		npc.nextPuyo  = new NextPuyo(320, 128, 4);
-		npc.score     = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE);
-		npc.animation = new ArrayList<BaseAnimation>();
-		npc.phase     = Phase.READY;
+		npc.field      = new Field(384, 0);
+		npc.nextPuyo   = new NextPuyo(320, 128, 4);
+		npc.yokokuPuyo = new YokokuPuyo(416, 32);
+		npc.score      = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE);
+		npc.animation  = new ArrayList<BaseAnimation>();
+		npc.phase      = Phase.READY;
 
 		// 準備アニメーションを追加
 		player.animation.add(new ReadyAnimation());
@@ -220,6 +225,10 @@ public class HitorideScreen extends BaseScreen {
 		// ステージ(前景)を描画
 		stage.drawFg(g);
 
+		// 予告ぷよを描画
+		player.yokokuPuyo.draw(g);
+		npc.yokokuPuyo.draw(g);
+
 		// アニメーション描画
 		for(BaseAnimation a : player.animation) {
 			a.draw(g);
@@ -315,7 +324,7 @@ public class HitorideScreen extends BaseScreen {
 		p.frameCount++;
 
 		// 組ぷよ自動落下
-		if(p.frameCount%autoDropCount == 0) {
+		if(p.frameCount % autoDropCount == 0) {
 			// 組ぷよを下移動
 			boolean isFixed = p.kumiPuyo.move(KumiPuyo.DIR_DOWN);
 			if(isFixed) {
