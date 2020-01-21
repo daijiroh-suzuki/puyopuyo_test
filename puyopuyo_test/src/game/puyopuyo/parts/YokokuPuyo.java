@@ -22,12 +22,17 @@ public class YokokuPuyo {
 	/** おじゃまぷよの種類毎のレート(レートが高い順に設定) */
 	private static final int[] YOKOKU_TYPE = {OKANPUYO, HOSHIPUYO, KINOKOPUYO, IWAPUYO, BIGPUYO, SMALLPUYO};
 
+	/** おじゃまぷよレート */
+	private static final int OJAMA_RATE = 70;
+
 	/** 基準座標x */
 	private int x;
 	/** 基準座標y */
 	private int y;
 	/** おじゃまぷよの個数 */
-	private int count;
+	private int count = 0;
+	/** スコア端数 */
+	private int fraction = 0;
 
 	/**
 	 * コンストラクタ
@@ -38,9 +43,6 @@ public class YokokuPuyo {
 	public YokokuPuyo(int x, int y) {
 		this.x = x;
 		this.y = y;
-
-		// おじゃまぷよの個数を初期化
-		count = 0;
 	}
 
 	/**
@@ -52,18 +54,16 @@ public class YokokuPuyo {
 
 		// 計算用おじゃまぷよ個数
 		int calcCount = count;
-		// おじゃまぷよの種類カウント
-		int[] typeCount = new int[YOKOKU_TYPE.length];
-		// おじゃまぷよの種類毎の個数を計算（配列がレートの高い順に設定されていることが前提）
-		for(int i=0; i<YOKOKU_TYPE.length; i++) {
-			typeCount[i] = calcCount / YOKOKU_TYPE[i];
-			calcCount = calcCount % YOKOKU_TYPE[i];
-		}
-
+		// おじゃまぷよの種類毎の個数
+		int typeCount = 0;
+		// 表示位置カウント
 		int dispCount = 0;
-		for(int i=0; i<typeCount.length; i++) {
-			for(int j=0; j<typeCount[i]; j++) {
 
+		for(int i=0; i<YOKOKU_TYPE.length; i++) {
+			typeCount = calcCount / YOKOKU_TYPE[i];
+			calcCount = calcCount % YOKOKU_TYPE[i];
+
+			for(int j=0; j<typeCount; j++) {
 				// 予告ぷよを描画
 				g.drawImage(ImageManager.yokokuImage,
 						x + dispCount * Field.TILE_SIZE,
@@ -82,12 +82,13 @@ public class YokokuPuyo {
 	}
 
 	/**
-	 * おじゃまぷよの個数を加算
+	 * おじゃまぷよを加算
 	 *
-	 * @param count
+	 * @param score
 	 */
-	public void addCount(int count) {
-		this.count += count;
+	public void addCount(int score) {
+		count += (score + fraction) / OJAMA_RATE;
+		fraction = score % OJAMA_RATE;
 	}
 
 	/**
