@@ -323,10 +323,12 @@ public class Field {
 				if(connectCount >= VANISH_COUNT) {
 					for(Point pos : vanishList) {
 						int clr = field[pos.y][pos.x];
-						// ぷよの消えた数を加算
-						pcnt++;
-						// 色数取得用HashSetに追加
-						colorSet.add(clr);
+						if(clr != COLOR_O) {
+							// ぷよの消えた数を加算
+							pcnt++;
+							// 色数取得用HashSetに追加
+							colorSet.add(clr);
+						}
 						// 消滅アニメーションをリストに追加
 						list.add(new VanishAnimation(x, y, pos, clr));
 						field[pos.y][pos.x] = COLOR_NONE;
@@ -336,7 +338,7 @@ public class Field {
 					list.add(new ChainAnimation(x, y, pos, chain+1));
 
 					// 連結ボーナスを計算
-					int idx = vanishList.size() - VANISH_COUNT;
+					int idx = connectCount - VANISH_COUNT;
 					connectBonus += CONNECT_BONUS[idx];
 
 					// 消滅対象あり
