@@ -390,6 +390,10 @@ public class Field {
 			if(!vanish[distY][distX] && field[y][x] == field[distY][distX]) {
 				checkVanish(distX, distY);
 			}
+			// 隣接するおじゃまぷよも削除対象リストに追加
+			if(field[distY][distX] == COLOR_O) {
+				vanishList.add(new Point(distX, distY));
+			}
 		}
 	}
 
@@ -447,14 +451,35 @@ public class Field {
 		return false;
 	}
 
-	public void addOjamaPuyo(int count) {
+	/**
+	 * おじゃまぷよを追加
+	 *
+	 * @param count
+	 */
+	public int addOjamaPuyo(int count) {
 
-		for(int i=0; i<count; i++) {
-			int distX = new Random().nextInt(6) + 1;
-			int distY = 2;
+		// 追加したおじゃまぷよ数
+		int rtCount = 0;
 
-			field[distY][distX] = COLOR_O;
+		if(count >= 6) {
+			for(int i=1; i<=6; i++) {
+				field[2][i] = COLOR_O;
+				rtCount++;
+			}
+		} else {
+			for(int i=0; i<count; i++) {
+				int distX, distY;
+				do {
+					distX = new Random().nextInt(6) + 1;
+					distY = 2;
+				} while(field[distY][distX] == COLOR_O);
+
+				field[distY][distX] = COLOR_O;
+				rtCount++;
+			}
 		}
+
+		return rtCount;
 	}
 
 	/**

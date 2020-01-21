@@ -34,6 +34,8 @@ public class HitorideScreen extends BaseScreen {
 
 	/** 組ぷよが自動落下するフレーム数 */
 	private int autoDropCount = 30;
+	/** おじゃまぷよレート */
+	private int ojamaRate = 70;
 
 	/** 一時停止フラグ */
 	private boolean pause;
@@ -392,7 +394,7 @@ public class HitorideScreen extends BaseScreen {
 				// スコアを更新
 				p.score.addScore(p.field.getScore());
 				// 相手の予告ぷよを更新
-				p.enemyYokoku.addCount(p.field.getScore() / 70);
+				p.enemyYokoku.addCount(p.field.getScore() / ojamaRate);
 				// 処理フェーズを消滅処理中に変更
 				p.phase = Phase.VANISH;
 			} else if(p.field.checkGameOver()) {
@@ -405,8 +407,7 @@ public class HitorideScreen extends BaseScreen {
 			} else if(p.yokokuPuyo.getCount() != 0) {
 				// 消滅対象なしで予告ぷよありの場合
 				// おじゃまぷよを追加
-				p.field.addOjamaPuyo(p.yokokuPuyo.getCount());
-				p.yokokuPuyo.subCount(p.yokokuPuyo.getCount());
+				p.yokokuPuyo.subCount(p.field.addOjamaPuyo(p.yokokuPuyo.getCount()));
 				// 処理フェーズを消滅処理中に変更
 				p.phase = Phase.VANISH;
 			} else {
