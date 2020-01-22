@@ -393,8 +393,11 @@ public class HitorideScreen extends BaseScreen {
 				p.score.addScore(p.field.getScore());
 				// 相手の予告ぷよを更新
 				p.enemyYokoku.addCount(p.field.getScore());
+				// 連鎖開始時->相手の予告ぷよをロック
+				p.enemyYokoku.setLock(true);
 				// 処理フェーズを消滅処理中に変更
 				p.phase = Phase.VANISH;
+
 			} else if(p.field.checkGameOver()) {
 				// 消滅対象なし & ゲームオーバーマスにぷよが存在する場合
 				// ゲームオーバーアニメーションをリストに追加
@@ -402,19 +405,25 @@ public class HitorideScreen extends BaseScreen {
 				p.animation.add(ga);
 				// 処理フェーズをゲームオーバーに変更
 				p.phase = Phase.GAMEOVER;
-			} else if(p.yokokuPuyo.getCount() != 0) {
-				// 消滅対象なしで予告ぷよありの場合
-				// おじゃまぷよを追加
-				p.yokokuPuyo.subCount(p.field.addOjamaPuyo(p.yokokuPuyo.getCount()));
-				// 処理フェーズを消滅処理中に変更
-				p.phase = Phase.VANISH;
+
 			} else {
 				// 消滅対象なしの場合
-				// 新しい組ぷよを生成
-				p.kumiPuyo = new KumiPuyo(p.field.getX(), p.field.getY(),
-						p.field, p.nextPuyo.pop());
-				// 処理フェーズを操作中に変更
-				p.phase = Phase.CONTROL;
+				// 連鎖終了->相手の予告ぷよのロック解除
+				p.enemyYokoku.setLock(false);
+				if(p.yokokuPuyo.getCount() != 0 && !p.yokokuPuyo.isLock()) {
+					// 予告ぷよありの場合
+					// おじゃまぷよを追加
+					p.yokokuPuyo.subCount(p.field.addOjamaPuyo(p.yokokuPuyo.getCount()));
+					// 処理フェーズを消滅処理中に変更
+					p.phase = Phase.VANISH;
+				} else {
+					// 予告ぷよなしの場合
+					// 新しい組ぷよを生成
+					p.kumiPuyo = new KumiPuyo(p.field.getX(), p.field.getY(),
+							p.field, p.nextPuyo.pop());
+					// 処理フェーズを操作中に変更
+					p.phase = Phase.CONTROL;
+				}
 			}
 		}
 	}

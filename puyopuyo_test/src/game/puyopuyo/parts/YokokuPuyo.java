@@ -33,6 +33,8 @@ public class YokokuPuyo {
 	private int count = 0;
 	/** スコア端数 */
 	private int fraction = 0;
+	/** ロックフラグ */
+	private boolean lock = false;
 
 	/**
 	 * コンストラクタ
@@ -88,6 +90,7 @@ public class YokokuPuyo {
 	 */
 	public void addCount(int score) {
 		count += (score + fraction) / OJAMA_RATE;
+		// 端数は次回追加時に持ち越す
 		fraction = score % OJAMA_RATE;
 	}
 
@@ -107,5 +110,19 @@ public class YokokuPuyo {
 	 */
 	public int getCount() {
 		return count;
+	}
+
+	/**
+	 * @return lock
+	 */
+	public boolean isLock() {
+		return lock;
+	}
+
+	/**
+	 * @param lock セットする lock
+	 */
+	public void setLock(boolean lock) {
+		this.lock = lock;
 	}
 }
