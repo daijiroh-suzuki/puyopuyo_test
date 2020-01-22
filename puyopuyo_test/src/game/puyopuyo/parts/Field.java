@@ -457,6 +457,7 @@ public class Field {
 	 * おじゃまぷよを追加
 	 *
 	 * @param count
+	 * @return 追加したおじゃまぷよ数
 	 */
 	public int addOjamaPuyo(int count) {
 
