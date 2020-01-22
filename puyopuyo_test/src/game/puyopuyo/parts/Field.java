@@ -93,11 +93,14 @@ public class Field {
 	/** ゲームオーバーマス */
 	private Point gameOver;
 
+	/** プレイヤー位置 */
+	private PlayerSide p;
+
 	/**
 	 * コンストラクタ
 	 */
 	public Field() {
-		this(0, 0);
+		this(0, 0, PlayerSide.PLAYER1);
 	}
 
 	/**
@@ -107,10 +110,23 @@ public class Field {
 	 * @param y 基準座標y
 	 */
 	public Field(int x, int y) {
+		this(x, y, PlayerSide.PLAYER1);
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 基準座標x
+	 * @param y 基準座標y
+	 * @param p プレイヤー位置
+	 */
+	public Field(int x, int y, PlayerSide p) {
 
 		// 基準座標を設定
 		this.x = x;
 		this.y = y;
+		// プレイヤー位置を設定
+		this.p = p;
 
 		// フィールド配列を生成
 		field = new int[ROW][COL];
@@ -335,7 +351,7 @@ public class Field {
 					}
 					// 連鎖アニメーションをリストに追加
 					Point pos = vanishList.get(0);
-					list.add(new ChainAnimation(x, y, pos, chain+1));
+					list.add(new ChainAnimation(x, y, pos, chain+1, p));
 
 					// 連結ボーナスを計算
 					int idx = connectCount - VANISH_COUNT;

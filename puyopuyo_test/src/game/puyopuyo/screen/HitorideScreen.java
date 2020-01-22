@@ -17,6 +17,7 @@ import game.puyopuyo.parts.Field;
 import game.puyopuyo.parts.KumiPuyo;
 import game.puyopuyo.parts.NextPuyo;
 import game.puyopuyo.parts.Phase;
+import game.puyopuyo.parts.PlayerSide;
 import game.puyopuyo.parts.Score;
 import game.puyopuyo.parts.Stage;
 import game.puyopuyo.parts.YokokuPuyo;
@@ -88,10 +89,10 @@ public class HitorideScreen extends BaseScreen {
 
 		// プレイヤーセット(NPC)を生成
 		npc = new PlayerSet();
-		npc.field      = new Field(384, 0);
-		npc.nextPuyo   = new NextPuyo(320, 128, 4);
+		npc.field      = new Field(384, 0, PlayerSide.PLAYER2);
+		npc.nextPuyo   = new NextPuyo(320, 128, 4, PlayerSide.PLAYER2);
 		npc.yokokuPuyo = new YokokuPuyo(416, 32);
-		npc.score      = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE);
+		npc.score      = new Score(9*Field.TILE_SIZE, 13*Field.TILE_SIZE, PlayerSide.PLAYER2);
 		npc.animation  = new ArrayList<BaseAnimation>();
 		npc.phase      = Phase.READY;
 

@@ -27,6 +27,8 @@ public class NextPuyo {
 	private LinkedList<int[][]> nextList;
 	/** NEXTぷよリストのサイズ */
 	private int size;
+	/** プレイヤー位置 */
+	private PlayerSide p;
 
 	/**
 	 * コンストラクタ
@@ -34,10 +36,12 @@ public class NextPuyo {
 	 * @param x 表示位置x座標(ピクセル単位)
 	 * @param y 表示位置y座標(ピクセル単位)
 	 * @param level 難易度
+	 * @param p プレイヤー位置
 	 */
-	public NextPuyo(int x, int y, int level) {
+	public NextPuyo(int x, int y, int level, PlayerSide p) {
 		this.x = x;
 		this.y = y;
+		this.p = p;
 
 		// 難易度を設定
 		this.level = level;
@@ -48,6 +52,17 @@ public class NextPuyo {
 		for(int i=0; i<size; i++) {
 			generate();
 		}
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param x 表示位置x座標(ピクセル単位)
+	 * @param y 表示位置y座標(ピクセル単位)
+	 * @param level 難易度
+	 */
+	public NextPuyo(int x, int y, int level) {
+		this(x, y, level, PlayerSide.PLAYER1);
 	}
 
 	/**
@@ -85,7 +100,11 @@ public class NextPuyo {
 			drawNext(x, y, next, g);
 
 			next = nextList.get(1);
-			drawNext(x + TILE_SIZE, y + TILE_SIZE, next, g);
+			if(p == PlayerSide.PLAYER1) {
+				drawNext(x + TILE_SIZE, y + TILE_SIZE, next, g);
+			} else {
+				drawNext(x - TILE_SIZE, y + TILE_SIZE, next, g);
+			}
 
 		} else {
 			int cnt = 0;
