@@ -24,7 +24,7 @@ public class DropAnimation extends BaseAnimation {
 	/** ぷよの色 */
 	private int color;
 	/** 落下速度 */
-	private int vy;
+	private int vy = 5;
 
 	/**
 	 * コンストラクタ
@@ -59,7 +59,6 @@ public class DropAnimation extends BaseAnimation {
 
 		// 落下速度計算
 //		vy = (this.to.y - this.current.y) / FRAME;
-		vy = 4;
 	}
 
 	/**
