@@ -84,6 +84,15 @@ public class YokokuPuyo {
 	}
 
 	/**
+	 * 初期化処理
+	 */
+	public void init() {
+		count = 0;
+		fraction = 0;
+		lock = false;
+	}
+
+	/**
 	 * おじゃまぷよを加算
 	 *
 	 * @param score

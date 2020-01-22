@@ -40,8 +40,6 @@ public class HitorideScreen extends BaseScreen {
 	private boolean pause;
 	/** 一時停止アニメーション */
 	private PauseAnimation pa;
-	/** ゲームオーバーアニメーション */
-	private GameOverAnimation ga;
 
 	/**
 	 * プレイヤーセット
@@ -65,6 +63,8 @@ public class HitorideScreen extends BaseScreen {
 		public Phase phase;
 		/** フレームカウント */
 		public int frameCount = 0;
+		/** ゲームオーバーアニメーション */
+		public GameOverAnimation ga;
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class HitorideScreen extends BaseScreen {
 			break;
 		case CONTROL:
 			// 操作中フェーズ
-			controlPhase(player);
+			controlPhase(player, npc);
 			break;
 		case DROP:
 			// 落下処理中フェーズ
@@ -152,7 +152,7 @@ public class HitorideScreen extends BaseScreen {
 			break;
 		case GAMEOVER:
 			// ゲームオーバーフェーズ
-			gameOverPhase(player);
+			gameOverPhase();
 			break;
 		default:
 			// とりあえず難易度選択はなし
@@ -167,7 +167,7 @@ public class HitorideScreen extends BaseScreen {
 			break;
 		case CONTROL:
 			// 操作中フェーズ
-			controlPhaseNPC(npc);
+			controlPhaseNPC(npc, player);
 			break;
 		case DROP:
 			// 落下処理中フェーズ
@@ -179,7 +179,7 @@ public class HitorideScreen extends BaseScreen {
 			break;
 		case GAMEOVER:
 			// ゲームオーバーフェーズ
-			gameOverPhase(npc);
+			gameOverPhase();
 			break;
 		default:
 			// とりあえず難易度選択はなし
@@ -265,8 +265,19 @@ public class HitorideScreen extends BaseScreen {
 	 * 操作中フェーズ
 	 *
 	 * @param p プレイヤーセット
+	 * @param enemy プレイヤーセット
 	 */
-	private void controlPhase(PlayerSet p) {
+	private void controlPhase(PlayerSet p, PlayerSet enemy) {
+
+		// 相手がゲームオーバーフェーズの場合
+		if(enemy.phase == Phase.GAMEOVER) {
+			// ゲームオーバーアニメーション(勝ち)をリストに追加
+			p.ga = new GameOverAnimation(p.field.getX(), p.field.getY(), true);
+			p.animation.add(p.ga);
+			// 処理フェーズをゲームオーバーに変更
+			p.phase = Phase.GAMEOVER;
+			return;
+		}
 
 		// フレームカウントを加算
 		p.frameCount++;
@@ -324,8 +335,19 @@ public class HitorideScreen extends BaseScreen {
 	 * 操作中フェーズ
 	 *
 	 * @param p プレイヤーセット
+	 * @param enemy プレイヤーセット
 	 */
-	private void controlPhaseNPC(PlayerSet p) {
+	private void controlPhaseNPC(PlayerSet p, PlayerSet enemy) {
+
+		// 相手がゲームオーバーフェーズの場合
+		if(enemy.phase == Phase.GAMEOVER) {
+			// ゲームオーバーアニメーション(勝ち)をリストに追加
+			p.ga = new GameOverAnimation(p.field.getX(), p.field.getY(), true);
+			p.animation.add(p.ga);
+			// 処理フェーズをゲームオーバーに変更
+			p.phase = Phase.GAMEOVER;
+			return;
+		}
 
 		// フレームカウントを加算
 		p.frameCount++;
@@ -401,9 +423,9 @@ public class HitorideScreen extends BaseScreen {
 
 			} else if(p.field.checkGameOver()) {
 				// 消滅対象なし & ゲームオーバーマスにぷよが存在する場合
-				// ゲームオーバーアニメーションをリストに追加
-				ga = new GameOverAnimation(p.field.getX(), p.field.getY());
-				p.animation.add(ga);
+				// ゲームオーバーアニメーション(負け)をリストに追加
+				p.ga = new GameOverAnimation(p.field.getX(), p.field.getY(), false);
+				p.animation.add(p.ga);
 				// 処理フェーズをゲームオーバーに変更
 				p.phase = Phase.GAMEOVER;
 
@@ -447,21 +469,41 @@ public class HitorideScreen extends BaseScreen {
 	/**
 	 * ゲームオーバーフェーズ
 	 *
-	 * @param p プレイヤーセット
 	 */
-	private void gameOverPhase(PlayerSet p) {
+	private void gameOverPhase() {
 		// Startキー押下時
-		if(controller.isKeyStart()) {
+		if(player.phase == Phase.GAMEOVER
+				&& npc.phase == Phase.GAMEOVER
+				&& controller.isKeyStart()) {
+
 			// ゲームオーバーアニメーションを削除
-			ga.setRunning(false);
+			player.ga.setRunning(false);
+			npc.ga.setRunning(false);
+
+			// 組ぷよを削除
+			player.kumiPuyo = null;
+			npc.kumiPuyo = null;
+
 			// フィールドを初期化
-			p.field.init();
+			player.field.init();
+			npc.field.init();
+
+			// 予告ぷよを初期化
+			player.yokokuPuyo.init();
+			npc.yokokuPuyo.init();
+
 			// スコアを初期化
-			p.score.init();
+			player.score.init();
+			npc.score.init();
+
 			// 準備アニメーションを追加
-			p.animation.add(new ReadyAnimation(p.field.getX(), p.field.getY()));
-			// 処理フェーズを操作中に変更
-			p.phase = Phase.READY;
+			player.animation.add(new ReadyAnimation(player.field.getX(), player.field.getY()));
+			npc.animation.add(new ReadyAnimation(npc.field.getX(), npc.field.getY()));
+
+			// 処理フェーズを準備中に変更
+			player.phase = Phase.READY;
+			npc.phase = Phase.READY;
+
 			controller.setKeyStart(false);
 		}
 	}

@@ -23,6 +23,8 @@ public class ImageManager {
 	public static Image levelImage;
 	/** 予告ぷよ画像Image */
 	public static Image yokokuImage;
+	/** その他画像Image */
+	public static Image miscImage;
 
 	/**
 	 * 初期化処理
@@ -74,5 +76,10 @@ public class ImageManager {
 		url = ImageManager.class.getClassLoader().getResource("images/yokoku.gif");
 		icon = new ImageIcon(url);
 		yokokuImage = icon.getImage();
+
+		// その他画像をロード
+		url = ImageManager.class.getClassLoader().getResource("images/misc.png");
+		icon = new ImageIcon(url);
+		miscImage = icon.getImage();
 	}
 }
