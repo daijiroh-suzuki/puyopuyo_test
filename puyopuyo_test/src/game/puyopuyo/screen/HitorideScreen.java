@@ -229,13 +229,6 @@ public class HitorideScreen extends BaseScreen {
 			npc.kumiPuyo.draw(g);
 		}
 
-		// ステージ(前景)を描画
-		stage.drawFg(g);
-
-		// 予告ぷよを描画
-		player.yokokuPuyo.draw(g);
-		npc.yokokuPuyo.draw(g);
-
 		// アニメーション描画
 		for(BaseAnimation a : player.animation) {
 			a.draw(g);
@@ -243,6 +236,13 @@ public class HitorideScreen extends BaseScreen {
 		for(BaseAnimation a : npc.animation) {
 			a.draw(g);
 		}
+
+		// ステージ(前景)を描画
+		stage.drawFg(g);
+
+		// 予告ぷよを描画
+		player.yokokuPuyo.draw(g);
+		npc.yokokuPuyo.draw(g);
 	}
 
 	/**
@@ -436,7 +436,7 @@ public class HitorideScreen extends BaseScreen {
 				if(p.yokokuPuyo.getCount() != 0 && !p.yokokuPuyo.isLock()) {
 					// 予告ぷよありの場合
 					// おじゃまぷよを追加
-					p.yokokuPuyo.subCount(p.field.addOjamaPuyo(p.yokokuPuyo.getCount()));
+					p.yokokuPuyo.subCount(p.field.addOjamaPuyo(p.yokokuPuyo.getCount(), p.animation));
 					// 処理フェーズを消滅処理中に変更
 					p.phase = Phase.VANISH;
 				} else {

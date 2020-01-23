@@ -101,4 +101,22 @@ public class DropAnimation extends BaseAnimation {
 	public Point getTo() {
 		return CommonUtil.pixel2Grid(to);
 	}
+
+	/**
+	 * Current座標(マス目単位)を取得
+	 *
+	 * @return
+	 */
+	public Point getCurrentGrid() {
+		return CommonUtil.pixel2Grid(current);
+	}
+
+	/**
+	 * Current座標(マス目単位)を設定
+	 *
+	 * @param current Current座標(マス目単位)
+	 */
+	public void setCurrentGrid(Point current) {
+		this.current = CommonUtil.grid2Pixel(current);
+	}
 }

@@ -475,17 +475,49 @@ public class Field {
 	 * @param count
 	 * @return 追加したおじゃまぷよ数
 	 */
-	public int addOjamaPuyo(int count) {
+	public int addOjamaPuyo(int count, List<BaseAnimation> list) {
 
 		// 追加したおじゃまぷよ数
 		int rtCount = 0;
 
+		// 追加するおじゃまぷよ数が1段以上の場合
 		if(count >= 6) {
-			for(int i=1; i<=6; i++) {
-				field[2][i] = COLOR_O;
-				rtCount++;
+			// 追加するおじゃまぷよの段数
+			int step = count / 6;
+			for(int i=0; i<step; i++) {
+				// おじゃまぷよを1段追加
+				for(int j=1; j<=6; j++) {
+					if(field[2][j] == COLOR_NONE) { // 13段目に他のぷよが存在する場合追加しない
+						// 13段目におじゃまぷよを追加
+						field[2][j] = COLOR_O;
+						rtCount++;
+					}
+				}
+				// ダミーアニメーションリスト
+				List<BaseAnimation> dummyAnimation = new ArrayList<BaseAnimation>();
+				// 一旦落下処理
+				drop(dummyAnimation);
+				// 落下アニメーションのfrom座標を変更
+				for(BaseAnimation a : dummyAnimation) {
+					if(a instanceof DropAnimation) {
+						DropAnimation da = (DropAnimation)a;
+						Point p = da.getCurrentGrid();
+						p.move(p.x, p.y - i);
+						da.setCurrentGrid(p);
+					}
+				}
+				// 変更後の落下アニメーションを追加
+				list.addAll(dummyAnimation);
 			}
+
+		// 追加するおじゃまぷよ数が1段未満の場合
 		} else {
+			int none = 0;
+			for(int i=0; i<field[2].length; i++) {
+				if(field[2][i] == COLOR_NONE) none++;
+			}
+			if(count > none) count = none;
+
 			for(int i=0; i<count; i++) {
 				int distX, distY;
 				do {
@@ -493,8 +525,11 @@ public class Field {
 					distY = 2;
 				} while(field[distY][distX] == COLOR_O);
 
-				field[distY][distX] = COLOR_O;
-				rtCount++;
+				if(field[distY][distX] == COLOR_NONE) { // 13段目に他のぷよが存在する場合追加しない
+					// 13段目におじゃまぷよを追加
+					field[distY][distX] = COLOR_O;
+					rtCount++;
+				}
 			}
 		}
 
