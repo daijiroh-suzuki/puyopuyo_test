@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="clean" name="puyopuyo_test">
+
+    <!-- ビルド成果物ディレクトリ -->
+    <property name="dir.target" value="target"/>
+    <property name="dir.target.classes" value="${dir.target}/classes" />
+
+    <!-- JARファイル名 -->
+    <property name="jarname" value="Puyopuyo"/>
+
+    <!-- srcディレクトリ -->
+    <property name="dir.src" value="src"/>
+
+    <!-- リソースファイルディレクトリ -->
+    <property name="dir.resources" value="resources"/>
+
+    <!-- ソースファイルエンコード -->
+    <property name="src.enc" value="UTF-8"/>
+
+    <!-- ビルド成果物削除 -->
+    <target name="clean" description="ビルド成果物削除">
+        <delete dir="${dir.target}"/>
+    </target>
+
+    <!-- コンパイル -->
+    <target name="compile" description="コンパイル">
+        <echo message="コンパイルを開始します。"/>
+        <mkdir dir="${dir.target.classes}"/>
+        <javac destdir="${dir.target.classes}"
+            encoding="${src.enc}"
+            source="1.8"
+            target="1.8"
+            includeAntRuntime="false"
+            debug="true">
+            <src path="${dir.src}"/>
+            <src path="${dir.resources}"/>
+        </javac>
+    </target>
+
+    <!-- リソースファイルのコピー -->
+    <target name="copyResources" description="リソースファイルのコピー">
+        <echo message="リソースファイルのコピーを行います。"/>
+        <copy todir="${dir.target.classes}">
+            <fileset dir="${dir.resources}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- JARファイル作成 -->
+    <target name="makeJar" depends="clean,compile,copyResources" description="JARファイル作成">
+        <echo message="JARファイルを作成します。"/>
+        <jar basedir="${dir.target.classes}" destfile="${dir.target}/${jarname}.jar"/>
+    </target>
+</project>
